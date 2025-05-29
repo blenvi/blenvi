@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "header": "Supabase Integration",
+    "type": "Setup Guide",
+    "status": "In Process",
+    "target": "18",
+    "limit": "5",
+    "reviewer": "Sarah Chen"
+  },
+  {
+    "id": 2,
+    "header": "Prisma Schema Setup",
+    "type": "Configuration",
+    "status": "Done",
+    "target": "29",
+    "limit": "24",
+    "reviewer": "Marcus Johnson"
+  },
+  {
+    "id": 3,
+    "header": "Clerk Authentication",
+    "type": "Integration",
+    "status": "Done",
+    "target": "10",
+    "limit": "13",
+    "reviewer": "Alex Rodriguez"
+  },
+  {
+    "id": 4,
+    "header": "Auth0 User Management",
+    "type": "Implementation",
+    "status": "Done",
+    "target": "27",
+    "limit": "23",
+    "reviewer": "Jamie Williams"
+  },
+  {
+    "id": 5,
+    "header": "Database Migration",
+    "type": "Troubleshooting",
+    "status": "In Process",
+    "target": "2",
+    "limit": "16",
+    "reviewer": "Raj Patel"
+  }
+]
