@@ -22,9 +22,9 @@ export default async function DashboardPage({
 
   switch (route) {
     case undefined:
-      return <OverviewPage teamId={teamId} projectId={projectId} />;
+      return <OverviewPage />;
     case "team":
-      return <TeamPage teamId={teamId} projectId={projectId} />;
+      return <TeamPage />;
     case "workflow":
       return <WorkflowPage teamId={teamId} projectId={projectId} />;
     case "configure":
