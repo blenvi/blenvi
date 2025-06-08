@@ -261,7 +261,7 @@ export function TeamMembers() {
               <Dialog open={isAddMemberOpen} onOpenChange={setIsAddMemberOpen}>
                 <DialogTrigger asChild>
                   <div className="flex flex-col items-center space-y-1 cursor-pointer flex-shrink-0">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted ring-2 ring-muted-foreground/20">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted border-2 border-muted-foreground/20">
                       <IconPlus className="h-8 w-8 text-muted-foreground" />
                     </div>
                     <span className="text-xs font-medium">Add New</span>

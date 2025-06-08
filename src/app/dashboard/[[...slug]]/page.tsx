@@ -3,6 +3,7 @@ import OverviewPage from "@/components/pages/overview-page";
 import TeamPage from "@/components/pages/team-page";
 import WorkflowPage from "@/components/pages/workflow-page";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function DashboardPage({
   params,
@@ -22,13 +23,29 @@ export default async function DashboardPage({
 
   switch (route) {
     case undefined:
-      return <OverviewPage />;
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <OverviewPage />
+        </Suspense>
+      );
     case "team":
-      return <TeamPage />;
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <TeamPage />
+        </Suspense>
+      );
     case "workflow":
-      return <WorkflowPage teamId={teamId} projectId={projectId} />;
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <WorkflowPage />
+        </Suspense>
+      );
     case "configure":
-      return <ConfigurePage teamId={teamId} projectId={projectId} />;
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <ConfigurePage teamId={teamId} projectId={projectId} />
+        </Suspense>
+      );
     default:
       return notFound();
   }
