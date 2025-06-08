@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { IconProgressHelp } from "@tabler/icons-react";
+import { IconBook } from "@tabler/icons-react";
 import { ModeToggle } from "./theme-toggle";
 
 export function SiteHeader({ route }: Readonly<{ route?: string }>) {
@@ -17,9 +17,15 @@ export function SiteHeader({ route }: Readonly<{ route?: string }>) {
           {route ?? "overview"}
         </h1>
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="ghost" size="icon">
-            <IconProgressHelp className="size-4" />
-            <span className="sr-only">Documentation</span>
+          <Button variant="ghost" size="icon" asChild>
+            <a
+              href="https://blenvi-docs.netlify.app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IconBook className="size-4" />
+              <span className="sr-only">Documentation</span>
+            </a>
           </Button>
           <ModeToggle />
         </div>
