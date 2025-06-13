@@ -1,4 +1,4 @@
-import ConfigurePage from "@/components/pages/configure-page";
+import IntegrationPage from "@/components/pages/integration";
 import OverviewPage from "@/components/pages/overview-page";
 import TeamPage from "@/components/pages/team-page";
 import WorkflowPage from "@/components/pages/workflow-page";
@@ -15,6 +15,7 @@ export default async function DashboardPage({
   const teamId = slug[0];
   const projectId = slug[1];
   const route = slug[2];
+  const integrationSlug = slug[3];
 
   // Validate IDs
   if (!teamId || !projectId) {
@@ -40,10 +41,10 @@ export default async function DashboardPage({
           <WorkflowPage />
         </Suspense>
       );
-    case "configure":
+    case "integration":
       return (
         <Suspense fallback={<div>Loading...</div>}>
-          <ConfigurePage teamId={teamId} projectId={projectId} />
+          <IntegrationPage integrationSlug={integrationSlug} />
         </Suspense>
       );
     default:

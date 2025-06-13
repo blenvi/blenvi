@@ -1,7 +1,6 @@
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { notFound } from "next/navigation";
 
 export default async function DashboardLayout({
   children,
@@ -11,10 +10,6 @@ export default async function DashboardLayout({
   params: Promise<{ slug?: string[] }>;
 }>) {
   const slug = (await params).slug || [];
-
-  if (slug.length < 2 || slug.length > 3) {
-    return notFound();
-  }
 
   return (
     <SidebarProvider
