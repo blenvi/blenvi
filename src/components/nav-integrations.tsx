@@ -2,7 +2,7 @@
 
 import {
   IconDots,
-  IconFolder,
+  IconExternalLink,
   IconShare3,
   IconTrash,
   type Icon,
@@ -28,13 +28,17 @@ import Link from "next/link";
 
 export function NavIntegrations({
   items,
-}: {
-  readonly items: readonly {
-    readonly name: string;
-    readonly url: string;
-    readonly icon: Icon;
+  activeProjectId,
+  activeTeamId,
+}: Readonly<{
+  items: {
+    slug: string;
+    name: string;
+    icon: Icon;
   }[];
-}) {
+  activeProjectId: string;
+  activeTeamId: string;
+}>) {
   const { isMobile } = useSidebar();
 
   return (
@@ -44,7 +48,9 @@ export function NavIntegrations({
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <Link href={item.url}>
+              <Link
+                href={`/dashboard/${activeTeamId}/${activeProjectId}/integration/${item.slug}`}
+              >
                 <item.icon />
                 <span>{item.name}</span>
               </Link>
@@ -65,8 +71,8 @@ export function NavIntegrations({
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <IconFolder />
-                  <span>Open</span>
+                  <IconExternalLink />
+                  <span>Docs</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <IconShare3 />

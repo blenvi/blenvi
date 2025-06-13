@@ -16,40 +16,79 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { IconPlus, IconSelector } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useMemo, memo, type FC } from "react";
+
+type Project = {
+  id: string;
+  name: string;
+  logo: React.ElementType;
+  plan: string;
+};
+
+type Item = {
+  id: string;
+  name: string;
+  logo: React.ElementType;
+  plan: string;
+  project?: Project[];
+};
+
+interface SwitcherProps {
+  items: Item[];
+  activeTeamId?: string;
+  activeProjectId?: string;
+}
+
+const DropdownItem: FC<{
+  item: Item;
+  index: number;
+  onClick: () => void;
+}> = memo(({ item, index, onClick }) => (
+  <DropdownMenuItem onClick={onClick} className="gap-2 p-2">
+    <div className="flex size-6 items-center justify-center rounded-sm border">
+      <item.logo className="size-4 shrink-0" />
+    </div>
+    {item.name}
+    <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+  </DropdownMenuItem>
+));
+
+DropdownItem.displayName = "DropdownItem";
 
 export function Switcher({
   items,
   activeTeamId,
   activeProjectId,
-}: Readonly<{
-  items: {
-    id: string;
-    name: string;
-    logo: React.ElementType;
-    plan: string;
-    project?: {
-      id: string;
-      name: string;
-      logo: React.ElementType;
-      plan: string;
-    }[];
-  }[];
-  activeTeamId?: string;
-  activeProjectId?: string;
-}>) {
+}: Readonly<SwitcherProps>) {
   const { isMobile } = useSidebar();
-  const [activeItem, setActiveItem] = useState(
-    () =>
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const activeItem = useMemo(() => {
+    return (
       items.find((item) =>
         item.project ? item.id === activeTeamId : item.id === activeProjectId
       ) || items[0]
-  );
-  const router = useRouter();
+    );
+  }, [items, activeTeamId, activeProjectId]);
+
   if (!activeTeamId && !activeProjectId) {
     return null;
   }
+
+  const handleItemSelection = (item: Item) => {
+    const pathSegments = pathname.split("/");
+
+    if (item.project && item.project.length > 0) {
+      pathSegments[2] = item.id;
+      pathSegments[3] = item.project[0].id;
+    } else {
+      pathSegments[3] = item.id;
+    }
+
+    router.push(pathSegments.join("/"));
+  };
 
   return (
     <SidebarMenu>
@@ -79,29 +118,15 @@ export function Switcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Teams
+              {activeItem.project ? "Teams" : "Projects"}
             </DropdownMenuLabel>
             {items.map((item, index) => (
-              <DropdownMenuItem
-                key={item.name}
-                onClick={() => {
-                  setActiveItem(item);
-                  if (item.project) {
-                    router.push(
-                      `/dashboard/${item.id}/${item.project?.[0]?.id}`
-                    );
-                  } else {
-                    router.push(`/dashboard/${activeTeamId}/${item.id}`);
-                  }
-                }}
-                className="gap-2 p-2"
-              >
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <item.logo className="size-4 shrink-0" />
-                </div>
-                {item.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-              </DropdownMenuItem>
+              <DropdownItem
+                key={item.id}
+                item={item}
+                index={index}
+                onClick={() => handleItemSelection(item)}
+              />
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2">

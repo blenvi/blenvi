@@ -15,8 +15,8 @@ import { Switcher } from "./switcher";
 import { mockData, navMain, navSecondary } from "@/constants";
 
 interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  activeTeamId?: string;
-  activeProjectId?: string;
+  activeTeamId: string;
+  activeProjectId: string;
 }
 
 export function DashboardSidebar({
@@ -38,8 +38,14 @@ export function DashboardSidebar({
         />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain} />
+        <NavMain
+          activeProjectId={activeProjectId}
+          activeTeamId={activeTeamId}
+          items={navMain}
+        />
         <NavIntegrations
+          activeProjectId={activeProjectId}
+          activeTeamId={activeTeamId}
           items={
             activeTeamProject?.project.find(
               (project) => project.id === activeProjectId

@@ -14,12 +14,16 @@ import { usePathname } from "next/navigation";
 
 export function NavMain({
   items,
+  activeProjectId,
+  activeTeamId,
 }: Readonly<{
   items: {
     title: string;
     url: string;
     icon?: Icon;
   }[];
+  activeProjectId: string;
+  activeTeamId: string;
 }>) {
   const pathname = usePathname();
   return (
@@ -44,7 +48,9 @@ export function NavMain({
                 asChild
                 isActive={pathname === item.url}
               >
-                <Link href={item.url}>
+                <Link
+                  href={`/dashboard/${activeTeamId}/${activeProjectId}${item.url}`}
+                >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>
