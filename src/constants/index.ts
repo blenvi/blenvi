@@ -673,17 +673,17 @@ export const navMain = [
 export const navSecondary = [
   {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: IconSettings,
   },
   {
     title: "Get Help",
-    url: "#",
+    url: "/help",
     icon: IconHelp,
   },
   {
     title: "Search",
-    url: "#",
+    url: "/search",
     icon: IconSearch,
   },
 ];
