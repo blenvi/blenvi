@@ -119,7 +119,7 @@ export function LoginForm({ className }: Readonly<{ className?: string }>) {
                   </Link>
                 </div>
                 <FormControl>
-                  <PasswordInput type="password" {...field} />
+                  <PasswordInput {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
