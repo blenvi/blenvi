@@ -23,6 +23,8 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { Icons } from "../ui/icons";
+import SIPasswordInput from "../custom/si-password-input";
+import PasswordInput from "../custom/password-input";
 
 const formSchema = z
   .object({
@@ -67,7 +69,12 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
           },
         },
       });
-      if (error) throw error;
+      if (error) {
+        toast.error("Sign up failed", {
+          description: error.message,
+        });
+        throw error;
+      }
       toast.success("Account created successfully!", {
         description: "Please check your email to confirm your account.",
       });
@@ -155,7 +162,7 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <SIPasswordInput {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -168,7 +175,7 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <PasswordInput {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

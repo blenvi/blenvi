@@ -24,6 +24,7 @@ import {
   IconBrandGoogleFilled,
 } from "@tabler/icons-react";
 import { Icons } from "../ui/icons";
+import PasswordInput from "../custom/password-input";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -118,7 +119,7 @@ export function LoginForm({ className }: Readonly<{ className?: string }>) {
                   </Link>
                 </div>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <PasswordInput type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

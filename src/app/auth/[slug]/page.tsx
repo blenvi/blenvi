@@ -8,6 +8,7 @@ import { LoginFormSkeleton } from "@/components/auth/login-form-skeleton";
 import { ForgotPasswordFormSkeleton } from "@/components/auth/forgot-password-form-skeleton";
 import { SignUpFormSkeleton } from "@/components/auth/sign-up-form-skeleton";
 import { UpdatePasswordFormSkeleton } from "@/components/auth/update-password-form-skeleton";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function AuthPage({
   params,
@@ -15,49 +16,56 @@ export default async function AuthPage({
   params: Promise<{ slug?: string }>;
 }>) {
   const slug = (await params).slug;
-  switch (slug) {
-    case undefined:
-    case "login":
-      return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-          <div className="w-full max-w-sm">
-            <Suspense fallback={<LoginFormSkeleton />}>
-              <LoginForm />
-            </Suspense>
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+
+  if (data.user) {
+    return notFound(); // User is already authenticated, redirect to not found
+  } else {
+    switch (slug) {
+      case undefined:
+      case "login":
+        return (
+          <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+            <div className="w-full max-w-sm">
+              <Suspense fallback={<LoginFormSkeleton />}>
+                <LoginForm />
+              </Suspense>
+            </div>
           </div>
-        </div>
-      );
-    case "sign-up":
-      return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-          <div className="w-full max-w-sm">
-            <Suspense fallback={<SignUpFormSkeleton />}>
-              <SignUpForm />
-            </Suspense>
+        );
+      case "sign-up":
+        return (
+          <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+            <div className="w-full max-w-sm">
+              <Suspense fallback={<SignUpFormSkeleton />}>
+                <SignUpForm />
+              </Suspense>
+            </div>
           </div>
-        </div>
-      );
-    case "forgot-password":
-      return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-          <div className="w-full max-w-sm">
-            <Suspense fallback={<ForgotPasswordFormSkeleton />}>
-              <ForgotPasswordForm />
-            </Suspense>
+        );
+      case "forgot-password":
+        return (
+          <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+            <div className="w-full max-w-sm">
+              <Suspense fallback={<ForgotPasswordFormSkeleton />}>
+                <ForgotPasswordForm />
+              </Suspense>
+            </div>
           </div>
-        </div>
-      );
-    case "update-password":
-      return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-          <div className="w-full max-w-sm">
-            <Suspense fallback={<UpdatePasswordFormSkeleton />}>
-              <UpdatePasswordForm />
-            </Suspense>
+        );
+      case "update-password":
+        return (
+          <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+            <div className="w-full max-w-sm">
+              <Suspense fallback={<UpdatePasswordFormSkeleton />}>
+                <UpdatePasswordForm />
+              </Suspense>
+            </div>
           </div>
-        </div>
-      );
-    default:
-      return notFound();
+        );
+      default:
+        return notFound();
+    }
   }
 }
