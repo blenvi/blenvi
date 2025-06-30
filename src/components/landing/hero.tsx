@@ -1,5 +1,5 @@
-import { Button, buttonVariants } from "@/components/ui/button";
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { buttonVariants } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
 import {
   IconBrandNextjs,
   IconBrandSupabase,
@@ -9,6 +9,7 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import { LogoutButton } from "../auth/logout-button";
 
 const brands = [
   { href: "#", icon: <IconBrandNextjs />, label: "Next.js" },
@@ -17,13 +18,15 @@ const brands = [
   { href: "#", icon: <IconBrandSupabase />, label: "Supabase" },
 ];
 
-export default function Hero({
+export default async function Hero({
   teamId,
   projectId,
 }: Readonly<{
   teamId: string;
   projectId: string;
 }>) {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
   return (
     <section className="relative overflow-hidden py-32 min-h-screen place-content-center">
       <div className="absolute inset-x-0 top-0 flex h-full w-full items-center justify-center opacity-100">
@@ -48,8 +51,8 @@ export default function Hero({
                 environment variables—right from one powerful dashboard.
               </p>
             </div>
-            <div className="flex justify-center gap-4">
-              <SignedIn>
+            {data.user ?
+              <div className="flex justify-center gap-4">
                 <Link
                   href={`/dashboard/${teamId}/${projectId}`}
                   className={buttonVariants()}
@@ -62,16 +65,20 @@ export default function Hero({
                 >
                   Learn More
                 </Link>
-              </SignedIn>
-              <SignedOut>
-                <Button variant="outline" asChild>
-                  <SignInButton>Sign In</SignInButton>
-                </Button>
-                <Button asChild>
-                  <SignUpButton>Sign Up</SignUpButton>
-                </Button>
-              </SignedOut>
-            </div>
+                <LogoutButton />
+              </div>
+            : <div className="flex justify-center gap-4">
+                <Link
+                  href="/auth/login"
+                  className={buttonVariants({ variant: "outline" })}
+                >
+                  Sign In
+                </Link>
+                <Link href="/auth/sign-up" className={buttonVariants()}>
+                  Sign Up
+                </Link>
+              </div>
+            }
             <div className="mt-12 flex flex-col items-center gap-5">
               <p className="text-muted-foreground text-xl">
                 Built with open-source technologies
