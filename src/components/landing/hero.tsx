@@ -1,11 +1,5 @@
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-  SignUpButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import {
   IconBrandNextjs,
   IconBrandSupabase,
@@ -68,7 +62,6 @@ export default function Hero({
                 >
                   Learn More
                 </Link>
-                <SignOutButton />
               </SignedIn>
               <SignedOut>
                 <Button variant="outline" asChild>
