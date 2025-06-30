@@ -9,13 +9,24 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { LogoutButton } from "../auth/logout-button";
 
 const brands = [
-  { href: "#", icon: <IconBrandNextjs />, label: "Next.js" },
-  { href: "#", icon: <IconBrandTypescript />, label: "TypeScript" },
-  { href: "#", icon: <IconBrandTailwind />, label: "Tailwind CSS" },
-  { href: "#", icon: <IconBrandSupabase />, label: "Supabase" },
+  { href: "https://nextjs.org", icon: <IconBrandNextjs />, label: "Next.js" },
+  {
+    href: "https://www.typescriptlang.org",
+    icon: <IconBrandTypescript />,
+    label: "TypeScript",
+  },
+  {
+    href: "https://tailwindcss.com",
+    icon: <IconBrandTailwind />,
+    label: "Tailwind CSS",
+  },
+  {
+    href: "https://supabase.com",
+    icon: <IconBrandSupabase />,
+    label: "Supabase",
+  },
 ];
 
 export default async function Hero({
@@ -65,7 +76,6 @@ export default async function Hero({
                 >
                   Learn More
                 </Link>
-                <LogoutButton />
               </div>
             : <div className="flex justify-center gap-4">
                 <Link
