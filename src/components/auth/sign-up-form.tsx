@@ -112,7 +112,6 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
         email: values.email,
         password: values.password,
         options: {
-          emailRedirectTo: `${window.location.origin}`,
           data: {
             firstName: values.firstName,
             lastName: values.lastName,
