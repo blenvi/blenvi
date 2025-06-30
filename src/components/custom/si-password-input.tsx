@@ -37,6 +37,11 @@ export default function SIPasswordInput({
       { regex: /\d/, text: "At least 1 number", id: "number" },
       { regex: /[a-z]/, text: "At least 1 lowercase letter", id: "lowercase" },
       { regex: /[A-Z]/, text: "At least 1 uppercase letter", id: "uppercase" },
+      {
+        regex: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/,
+        text: "At least 1 special character",
+        id: "special",
+      },
     ];
 
     return requirements.map((req) => ({
@@ -56,14 +61,16 @@ export default function SIPasswordInput({
     if (score === 0) return "bg-border";
     if (score <= 1) return "bg-red-500";
     if (score <= 2) return "bg-orange-500";
-    if (score === 3) return "bg-amber-500";
+    if (score <= 3) return "bg-amber-500";
+    if (score === 4) return "bg-lime-500";
     return "bg-emerald-500";
   };
 
   const getStrengthText = (score: number) => {
     if (score === 0) return "Enter a password";
     if (score <= 2) return "Weak password";
-    if (score === 3) return "Medium password";
+    if (score === 3) return "Fair password";
+    if (score === 4) return "Good password";
     return "Strong password";
   };
 
@@ -99,7 +106,7 @@ export default function SIPasswordInput({
       <div className="bg-border mt-3 mb-4 h-1 w-full overflow-hidden rounded-full">
         <div
           className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
-          style={{ width: `${(strengthScore / 4) * 100}%` }}
+          style={{ width: `${(strengthScore / 5) * 100}%` }}
           aria-hidden="true"
         ></div>
       </div>

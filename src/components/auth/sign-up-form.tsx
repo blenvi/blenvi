@@ -26,18 +26,68 @@ import { Icons } from "../ui/icons";
 import SIPasswordInput from "../custom/si-password-input";
 import PasswordInput from "../custom/password-input";
 
+const passwordValidation = z
+  .string()
+  .min(8, "Password must be at least 8 characters")
+  .max(128, "Password must be less than 128 characters")
+  .regex(/\d/, "Password must contain at least 1 number")
+  .regex(/[a-z]/, "Password must contain at least 1 lowercase letter")
+  .regex(/[A-Z]/, "Password must contain at least 1 uppercase letter")
+  .regex(
+    /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/,
+    "Password must contain at least 1 special character"
+  )
+  .regex(
+    /^(?!.*(.)\1{2,})/,
+    "Password cannot contain 3 or more consecutive identical characters"
+  )
+  .regex(/^(?!.*\s)/, "Password cannot contain spaces")
+  .refine((password) => {
+    // Check for common weak patterns
+    const weakPatterns = [
+      /^123456/,
+      /^password/i,
+      /^qwerty/i,
+      /^abc123/i,
+      /^111111/,
+      /^000000/,
+      /^admin/i,
+      /^welcome/i,
+    ];
+    return !weakPatterns.some((pattern) => pattern.test(password));
+  }, "Password contains common weak patterns");
+
 const formSchema = z
   .object({
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     email: z.string().email("Please enter a valid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: passwordValidation,
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
-  });
+  })
+  .refine(
+    (data) => {
+      // Check if password contains user's name or email
+      const password = data.password.toLowerCase();
+      const firstName = data.firstName.toLowerCase();
+      const lastName = data.lastName.toLowerCase();
+      const emailUser = data.email.split("@")[0].toLowerCase();
+
+      return (
+        !password.includes(firstName) &&
+        !password.includes(lastName) &&
+        !password.includes(emailUser)
+      );
+    },
+    {
+      message: "Password cannot contain your name or email",
+      path: ["password"],
+    }
+  );
 
 export function SignUpForm({ className }: Readonly<{ className?: string }>) {
   const [isLoading, setIsLoading] = useState(false);
