@@ -2,7 +2,6 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -20,6 +19,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Icons } from "../ui/icons";
+import SIPasswordInput from "../custom/si-password-input";
 
 const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -84,11 +84,7 @@ export function UpdatePasswordForm({
               <FormItem>
                 <FormLabel>New password</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="New password"
-                    type="password"
-                    {...field}
-                  />
+                  <SIPasswordInput {...field} />
                 </FormControl>
                 <FormDescription>
                   Enter a new password to reset your current password.
