@@ -45,11 +45,10 @@ export default async function Hero({
           alt="background"
           src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/square-alt-grid.svg"
           className="[mask-image:radial-gradient(75%_75%_at_center,white,transparent)] opacity-90"
-          layout="fill"
-          objectFit="cover"
+          fill
         />
       </div>
-      <div className="relative z-10 max-w-7xl px-6 lg:px-8 mx-auto">
+      <div className="relative z-10 max-w-7xl px-4 lg:px-6 mx-auto">
         <div className="mx-auto flex max-w-5xl flex-col items-center">
           <div className="flex flex-col items-center gap-6">
             <div>

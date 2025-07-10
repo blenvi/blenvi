@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import {
   IconEye,
   IconEyeOff,
+  IconShieldCancel,
   IconShieldCheck,
-  IconX,
 } from "@tabler/icons-react";
 
 export default function SIPasswordInput({
@@ -129,7 +129,7 @@ export default function SIPasswordInput({
                 className="text-emerald-500"
                 aria-hidden="true"
               />
-            : <IconX
+            : <IconShieldCancel
                 size={16}
                 className="text-muted-foreground/80"
                 aria-hidden="true"
