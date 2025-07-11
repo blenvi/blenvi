@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { IconCirclePlusFilled, type Icon } from "@tabler/icons-react";
+import { type Icon, IconCirclePlusFilled } from '@tabler/icons-react';
 
 import {
   SidebarGroup,
@@ -8,9 +8,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+} from '@/components/ui/sidebar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function NavMain({
   items,
@@ -41,16 +41,10 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
+          {items.map(item => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                tooltip={item.title}
-                asChild
-                isActive={pathname === item.url}
-              >
-                <Link
-                  href={`/dashboard/${activeTeamId}/${activeProjectId}${item.url}`}
-                >
+              <SidebarMenuButton tooltip={item.title} asChild isActive={pathname === item.url}>
+                <Link href={`/dashboard/${activeTeamId}/${activeProjectId}${item.url}`}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>

@@ -1,5 +1,5 @@
-import { TeamDiscussion } from "../team-discussion";
-import { TeamMembers } from "../team-members";
+import { TeamDiscussion } from '../team-discussion';
+import { TeamMembers } from '../team-members';
 
 export default function TeamPage() {
   return (

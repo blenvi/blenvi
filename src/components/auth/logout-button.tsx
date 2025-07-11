@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export function LogoutButton(props: React.ComponentProps<typeof Button>) {
   const router = useRouter();
@@ -14,12 +14,7 @@ export function LogoutButton(props: React.ComponentProps<typeof Button>) {
   };
 
   return (
-    <Button
-      size={props.size}
-      variant={props.variant}
-      onClick={logout}
-      {...props}
-    >
+    <Button size={props.size} variant={props.variant} onClick={logout} {...props}>
       Logout
     </Button>
   );

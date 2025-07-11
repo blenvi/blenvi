@@ -1,5 +1,5 @@
-import { DataFlowMetrics } from "../data-flow-metrics";
-import { IntegrationCards } from "../integration-cards";
+import { DataFlowMetrics } from '../data-flow-metrics';
+import { IntegrationCards } from '../integration-cards';
 
 export default function WorkflowPage() {
   return (

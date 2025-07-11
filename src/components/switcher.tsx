@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   DropdownMenu,
@@ -8,16 +8,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { IconPlus, IconSelector } from "@tabler/icons-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useMemo, memo, type FC } from "react";
+} from '@/components/ui/sidebar';
+import { IconPlus, IconSelector } from '@tabler/icons-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { type FC, memo, useMemo } from 'react';
 
 type Project = {
   id: string;
@@ -54,22 +54,17 @@ const DropdownItem: FC<{
   </DropdownMenuItem>
 ));
 
-DropdownItem.displayName = "DropdownItem";
+DropdownItem.displayName = 'DropdownItem';
 
-export function Switcher({
-  items,
-  activeTeamId,
-  activeProjectId,
-}: Readonly<SwitcherProps>) {
+export function Switcher({ items, activeTeamId, activeProjectId }: Readonly<SwitcherProps>) {
   const { isMobile } = useSidebar();
   const router = useRouter();
   const pathname = usePathname();
 
   const activeItem = useMemo(() => {
     return (
-      items.find((item) =>
-        item.project ? item.id === activeTeamId : item.id === activeProjectId
-      ) || items[0]
+      items.find(item => (item.project ? item.id === activeTeamId : item.id === activeProjectId)) ||
+      items[0]
     );
   }, [items, activeTeamId, activeProjectId]);
 
@@ -78,7 +73,7 @@ export function Switcher({
   }
 
   const handleItemSelection = (item: Item) => {
-    const pathSegments = pathname.split("/");
+    const pathSegments = pathname.split('/');
 
     if (item.project && item.project.length > 0) {
       pathSegments[2] = item.id;
@@ -87,7 +82,7 @@ export function Switcher({
       pathSegments[3] = item.id;
     }
 
-    router.push(pathSegments.join("/"));
+    router.push(pathSegments.join('/'));
   };
 
   return (
@@ -103,9 +98,7 @@ export function Switcher({
                 <activeItem.logo className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {activeItem.name}
-                </span>
+                <span className="truncate font-semibold">{activeItem.name}</span>
                 <span className="truncate text-xs">{activeItem.plan}</span>
               </div>
               <IconSelector className="ml-auto" />
@@ -114,11 +107,11 @@ export function Switcher({
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             align="start"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              {activeItem.project ? "Teams" : "Projects"}
+              {activeItem.project ? 'Teams' : 'Projects'}
             </DropdownMenuLabel>
             {items.map((item, index) => (
               <DropdownItem

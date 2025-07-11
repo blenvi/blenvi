@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -10,39 +10,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import {
-  IconBrandGithubFilled,
-  IconBrandGoogleFilled,
-} from "@tabler/icons-react";
-import Link from "next/link";
-import { Icons } from "../ui/icons";
-import SIPasswordInput from "../custom/si-password-input";
-import PasswordInput from "../custom/password-input";
+} from '@/components/ui/form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import { IconBrandGithubFilled, IconBrandGoogleFilled } from '@tabler/icons-react';
+import Link from 'next/link';
+import { Icons } from '../ui/icons';
+import SIPasswordInput from '../custom/si-password-input';
+import PasswordInput from '../custom/password-input';
 
 const passwordValidation = z
   .string()
-  .min(8, "Password must be at least 8 characters")
-  .max(128, "Password must be less than 128 characters")
-  .regex(/\d/, "Password must contain at least 1 number")
-  .regex(/[a-z]/, "Password must contain at least 1 lowercase letter")
-  .regex(/[A-Z]/, "Password must contain at least 1 uppercase letter")
+  .min(8, 'Password must be at least 8 characters')
+  .max(128, 'Password must be less than 128 characters')
+  .regex(/\d/, 'Password must contain at least 1 number')
+  .regex(/[a-z]/, 'Password must contain at least 1 lowercase letter')
+  .regex(/[A-Z]/, 'Password must contain at least 1 uppercase letter')
   .regex(
     /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/,
-    "Password must contain at least 1 special character"
+    'Password must contain at least 1 special character'
   )
-  .regex(
-    /^(?!.*(.)\1{2,})/,
-    "Password cannot contain 3 or more consecutive identical characters"
-  )
-  .regex(/^(?!.*\s)/, "Password cannot contain spaces")
-  .refine((password) => {
+  .regex(/^(?!.*(.)\1{2,})/, 'Password cannot contain 3 or more consecutive identical characters')
+  .regex(/^(?!.*\s)/, 'Password cannot contain spaces')
+  .refine(password => {
     // Check for common weak patterns
     const weakPatterns = [
       /^123456/,
@@ -54,28 +48,28 @@ const passwordValidation = z
       /^admin/i,
       /^welcome/i,
     ];
-    return !weakPatterns.some((pattern) => pattern.test(password));
-  }, "Password contains common weak patterns");
+    return !weakPatterns.some(pattern => pattern.test(password));
+  }, 'Password contains common weak patterns');
 
 const formSchema = z
   .object({
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().min(1, "Last name is required"),
-    email: z.string().email("Please enter a valid email address"),
+    firstName: z.string().min(1, 'First name is required'),
+    lastName: z.string().min(1, 'Last name is required'),
+    email: z.string().email('Please enter a valid email address'),
     password: passwordValidation,
-    confirmPassword: z.string().min(1, "Please confirm your password"),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine(data => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ['confirmPassword'],
   })
   .refine(
-    (data) => {
+    data => {
       // Check if password contains user's name or email
       const password = data.password.toLowerCase();
       const firstName = data.firstName.toLowerCase();
       const lastName = data.lastName.toLowerCase();
-      const emailUser = data.email.split("@")[0].toLowerCase();
+      const emailUser = data.email.split('@')[0].toLowerCase();
 
       return (
         !password.includes(firstName) &&
@@ -84,8 +78,8 @@ const formSchema = z
       );
     },
     {
-      message: "Password cannot contain your name or email",
-      path: ["password"],
+      message: 'Password cannot contain your name or email',
+      path: ['password'],
     }
   );
 
@@ -95,11 +89,11 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
@@ -119,20 +113,17 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
         },
       });
       if (error) {
-        toast.error("Sign up failed", {
+        toast.error('Sign up failed', {
           description: error.message,
         });
         throw error;
       }
-      toast.success("Account created successfully!", {
-        description: "Please check your email to confirm your account.",
+      toast.success('Account created successfully!', {
+        description: 'Please check your email to confirm your account.',
       });
     } catch (error: unknown) {
-      toast.error("Sign up failed", {
-        description:
-          error instanceof Error ?
-            error.message
-          : "An error occurred during sign up",
+      toast.error('Sign up failed', {
+        description: error instanceof Error ? error.message : 'An error occurred during sign up',
       });
     } finally {
       setIsLoading(false);
@@ -141,10 +132,7 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSignUp)}
-        className={cn("space-y-6", className)}
-      >
+      <form onSubmit={form.handleSubmit(handleSignUp)} className={cn('space-y-6', className)}>
         <div className="flex flex-col items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-md">
             <Icons.Blenvi className="size-10 invert-100 dark:invert-0" />
@@ -152,7 +140,7 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
           <span className="sr-only">Acme Inc.</span>
           <h1 className="text-xl font-bold">Welcome to Blenvi</h1>
           <div className="text-center text-sm">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link href="/auth/login" className="underline underline-offset-4">
               Log in
             </Link>
@@ -194,11 +182,7 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="user@example.com"
-                    type="email"
-                    {...field}
-                  />
+                  <Input placeholder="user@example.com" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -231,13 +215,11 @@ export function SignUpForm({ className }: Readonly<{ className?: string }>) {
             )}
           />
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Creating an account..." : "Continue"}
+            {isLoading ? 'Creating an account...' : 'Continue'}
           </Button>
         </div>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-          <span className="bg-background text-muted-foreground relative z-10 px-2">
-            Or
-          </span>
+          <span className="bg-background text-muted-foreground relative z-10 px-2">Or</span>
         </div>
         <div className="grid gap-6 sm:grid-cols-2">
           <Button variant="outline" type="button" className="w-full">

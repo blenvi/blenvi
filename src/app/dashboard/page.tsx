@@ -1,5 +1,5 @@
-import TeamProjectSelector from "@/components/dashboard/team-project-selector";
-import React from "react";
+import TeamProjectSelector from '@/components/dashboard/team-project-selector';
+import React from 'react';
 
 export default function DashboardPage() {
   return (

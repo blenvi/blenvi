@@ -1,9 +1,9 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 export function UpdatePasswordFormSkeleton({ className }: Readonly<{ className?: string }>) {
   return (
-    <div className={cn("space-y-6", className)}>
+    <div className={cn('space-y-6', className)}>
       {/* Header section with logo and title */}
       <div className="flex flex-col items-center gap-2">
         <div className="flex size-8 items-center justify-center rounded-md">

@@ -1,7 +1,7 @@
-import { DataTable } from "@/components/data-table";
-import data from "./data.json";
-import { Suspense } from "react";
-import OverviewCards from "../overview-cards";
+import { DataTable } from '@/components/data-table';
+import data from './data.json';
+import { Suspense } from 'react';
+import OverviewCards from '../overview-cards';
 
 export default function OverviewPage() {
   return (

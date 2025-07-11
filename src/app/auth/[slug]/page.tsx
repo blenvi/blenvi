@@ -1,14 +1,14 @@
-import { LoginForm } from "@/components/auth/login-form";
-import { SignUpForm } from "@/components/auth/sign-up-form";
-import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
-import { UpdatePasswordForm } from "@/components/auth/update-password-form";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import { LoginFormSkeleton } from "@/components/auth/login-form-skeleton";
-import { ForgotPasswordFormSkeleton } from "@/components/auth/forgot-password-form-skeleton";
-import { SignUpFormSkeleton } from "@/components/auth/sign-up-form-skeleton";
-import { UpdatePasswordFormSkeleton } from "@/components/auth/update-password-form-skeleton";
-import { createClient } from "@/lib/supabase/server";
+import { LoginForm } from '@/components/auth/login-form';
+import { SignUpForm } from '@/components/auth/sign-up-form';
+import { ForgotPasswordForm } from '@/components/auth/forgot-password-form';
+import { UpdatePasswordForm } from '@/components/auth/update-password-form';
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
+import { LoginFormSkeleton } from '@/components/auth/login-form-skeleton';
+import { ForgotPasswordFormSkeleton } from '@/components/auth/forgot-password-form-skeleton';
+import { SignUpFormSkeleton } from '@/components/auth/sign-up-form-skeleton';
+import { UpdatePasswordFormSkeleton } from '@/components/auth/update-password-form-skeleton';
+import { createClient } from '@/lib/supabase/server';
 
 export default async function AuthPage({
   params,
@@ -24,7 +24,7 @@ export default async function AuthPage({
   } else {
     switch (slug) {
       case undefined:
-      case "login":
+      case 'login':
         return (
           <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-sm">
@@ -34,7 +34,7 @@ export default async function AuthPage({
             </div>
           </div>
         );
-      case "sign-up":
+      case 'sign-up':
         return (
           <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-sm">
@@ -44,7 +44,7 @@ export default async function AuthPage({
             </div>
           </div>
         );
-      case "forgot-password":
+      case 'forgot-password':
         return (
           <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-sm">
@@ -54,7 +54,7 @@ export default async function AuthPage({
             </div>
           </div>
         );
-      case "update-password":
+      case 'update-password':
         return (
           <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-sm">

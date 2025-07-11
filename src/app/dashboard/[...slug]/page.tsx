@@ -1,9 +1,9 @@
-import IntegrationPage from "@/components/pages/integration";
-import OverviewPage from "@/components/pages/overview-page";
-import TeamPage from "@/components/pages/team-page";
-import WorkflowPage from "@/components/pages/workflow-page";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import IntegrationPage from '@/components/pages/integration';
+import OverviewPage from '@/components/pages/overview-page';
+import TeamPage from '@/components/pages/team-page';
+import WorkflowPage from '@/components/pages/workflow-page';
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default async function DashboardPage({
   params,
@@ -29,19 +29,19 @@ export default async function DashboardPage({
           <OverviewPage />
         </Suspense>
       );
-    case "team":
+    case 'team':
       return (
         <Suspense fallback={<div>Loading...</div>}>
           <TeamPage />
         </Suspense>
       );
-    case "workflow":
+    case 'workflow':
       return (
         <Suspense fallback={<div>Loading...</div>}>
           <WorkflowPage />
         </Suspense>
       );
-    case "integration":
+    case 'integration':
       return (
         <Suspense fallback={<div>Loading...</div>}>
           <IntegrationPage integrationSlug={integrationSlug} />

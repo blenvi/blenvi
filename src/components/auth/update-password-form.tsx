@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -10,31 +10,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import { Icons } from "../ui/icons";
-import SIPasswordInput from "../custom/si-password-input";
+} from '@/components/ui/form';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import { Icons } from '../ui/icons';
+import SIPasswordInput from '../custom/si-password-input';
 
 const formSchema = z.object({
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-export function UpdatePasswordForm({
-  className,
-}: Readonly<{ className?: string }>) {
+export function UpdatePasswordForm({ className }: Readonly<{ className?: string }>) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      password: "",
+      password: '',
     },
   });
 
@@ -47,16 +45,14 @@ export function UpdatePasswordForm({
         password: values.password,
       });
       if (error) throw error;
-      toast.success("Password updated successfully!", {
-        description: "Your password has been changed.",
+      toast.success('Password updated successfully!', {
+        description: 'Your password has been changed.',
       });
-      router.push("/");
+      router.push('/');
     } catch (error: unknown) {
-      toast.error("Failed to update password", {
+      toast.error('Failed to update password', {
         description:
-          error instanceof Error ?
-            error.message
-          : "An error occurred while updating your password",
+          error instanceof Error ? error.message : 'An error occurred while updating your password',
       });
     } finally {
       setIsLoading(false);
@@ -67,7 +63,7 @@ export function UpdatePasswordForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleUpdatePassword)}
-        className={cn("space-y-6", className)}
+        className={cn('space-y-6', className)}
       >
         <div className="flex flex-col items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-md">
@@ -94,7 +90,7 @@ export function UpdatePasswordForm({
             )}
           />
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Saving..." : "Save new password"}
+            {isLoading ? 'Saving...' : 'Save new password'}
           </Button>
         </div>
       </form>

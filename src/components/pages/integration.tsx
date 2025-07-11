@@ -1,4 +1,4 @@
-import { IntegrationConfiguration } from "../ui/integration-configuration";
+import { IntegrationConfiguration } from '../ui/integration-configuration';
 
 export default function IntegrationPage({
   integrationSlug,

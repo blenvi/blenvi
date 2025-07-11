@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -11,29 +11,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { toast } from "sonner";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Icons } from "../ui/icons";
+} from '@/components/ui/form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { toast } from 'sonner';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { Icons } from '../ui/icons';
 
 const formSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().email('Please enter a valid email address'),
 });
 
-export function ForgotPasswordForm({
-  className,
-}: Readonly<{ className?: string }>) {
+export function ForgotPasswordForm({ className }: Readonly<{ className?: string }>) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -42,23 +40,20 @@ export function ForgotPasswordForm({
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(
-        values.email,
-        {
-          redirectTo: `${window.location.origin}/auth/update-password`,
-        }
-      );
+      const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
+        redirectTo: `${window.location.origin}/auth/update-password`,
+      });
       if (error) throw error;
-      toast.success("Password reset email sent!", {
+      toast.success('Password reset email sent!', {
         description:
-          "If you registered using your email and password, you will receive a password reset email.",
+          'If you registered using your email and password, you will receive a password reset email.',
       });
     } catch (error: unknown) {
-      toast.error("Failed to send reset email", {
+      toast.error('Failed to send reset email', {
         description:
-          error instanceof Error ?
-            error.message
-          : "An error occurred while sending the reset email",
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while sending the reset email',
       });
     } finally {
       setIsLoading(false);
@@ -69,7 +64,7 @@ export function ForgotPasswordForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleForgotPassword)}
-        className={cn("space-y-6", className)}
+        className={cn('space-y-6', className)}
       >
         <div className="flex flex-col items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-md">
@@ -78,7 +73,7 @@ export function ForgotPasswordForm({
           <span className="sr-only">Blenvi</span>
           <h1 className="text-xl font-bold">Reset Password</h1>
           <div className="text-center text-sm">
-            Return back to{" "}
+            Return back to{' '}
             <Link href="/auth/login" className="underline underline-offset-4">
               Login
             </Link>
@@ -92,11 +87,7 @@ export function ForgotPasswordForm({
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="user@example.com"
-                    type="email"
-                    {...field}
-                  />
+                  <Input placeholder="user@example.com" type="email" {...field} />
                 </FormControl>
                 <FormDescription>
                   Enter your email address to receive a password reset link.
@@ -106,7 +97,7 @@ export function ForgotPasswordForm({
             )}
           />
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Sending..." : "Send reset email"}
+            {isLoading ? 'Sending...' : 'Send reset email'}
           </Button>
         </div>
       </form>
