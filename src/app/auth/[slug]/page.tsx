@@ -1,12 +1,14 @@
-import { LoginForm } from '@/components/auth/login-form';
-import { SignUpForm } from '@/components/auth/sign-up-form';
-import { ForgotPasswordForm } from '@/components/auth/forgot-password-form';
-import { UpdatePasswordForm } from '@/components/auth/update-password-form';
-import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { LoginFormSkeleton } from '@/components/auth/login-form-skeleton';
+
+import { notFound } from 'next/navigation';
+
+import { ForgotPasswordForm } from '@/components/auth/forgot-password-form';
 import { ForgotPasswordFormSkeleton } from '@/components/auth/forgot-password-form-skeleton';
+import { LoginForm } from '@/components/auth/login-form';
+import { LoginFormSkeleton } from '@/components/auth/login-form-skeleton';
+import { SignUpForm } from '@/components/auth/sign-up-form';
 import { SignUpFormSkeleton } from '@/components/auth/sign-up-form-skeleton';
+import { UpdatePasswordForm } from '@/components/auth/update-password-form';
 import { UpdatePasswordFormSkeleton } from '@/components/auth/update-password-form-skeleton';
 import { createClient } from '@/lib/supabase/server';
 

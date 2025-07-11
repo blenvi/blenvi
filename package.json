@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "lint:fix": "next lint --fix",
     "prepare": "husky",
-    "check": "npm run format && npm run lint:fix && npm run type-check"
+    "check": "npm run format && npm run lint:fix && npm run type-check",
+    "sort-imports": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -62,6 +63,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import-x": "^4.16.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "prettier": "^3.6.2",
@@ -72,8 +74,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "prettier --write"
     ],
     "*.{json,css,md}": [
       "prettier --write"

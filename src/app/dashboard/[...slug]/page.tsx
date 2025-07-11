@@ -1,9 +1,11 @@
+import { Suspense } from 'react';
+
+import { notFound } from 'next/navigation';
+
 import IntegrationPage from '@/components/pages/integration';
 import OverviewPage from '@/components/pages/overview-page';
 import TeamPage from '@/components/pages/team-page';
 import WorkflowPage from '@/components/pages/workflow-page';
-import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 export default async function DashboardPage({
   params,

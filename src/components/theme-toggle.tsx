@@ -1,6 +1,8 @@
 'use client';
 
 import * as React from 'react';
+
+import { IconMoon, IconSun } from '@tabler/icons-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
@@ -10,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { IconMoon, IconSun } from '@tabler/icons-react';
 
 export function ModeToggle() {
   const { setTheme } = useTheme();

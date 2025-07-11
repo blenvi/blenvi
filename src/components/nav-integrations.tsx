@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { type Icon, IconDots, IconExternalLink, IconShare3, IconTrash } from '@tabler/icons-react';
 
 import {
@@ -18,7 +20,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import Link from 'next/link';
 
 export function NavIntegrations({
   items,

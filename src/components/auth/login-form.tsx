@@ -1,8 +1,17 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
+import { useState } from 'react';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IconBrandGithubFilled, IconBrandGoogleFilled } from '@tabler/icons-react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
+
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -11,17 +20,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { createClient } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
-import { IconBrandGithubFilled, IconBrandGoogleFilled } from '@tabler/icons-react';
-import { Icons } from '../ui/icons';
+
 import PasswordInput from '../custom/password-input';
+import { Icons } from '../ui/icons';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),

@@ -1,8 +1,10 @@
 'use client';
 
 import { useId, useMemo, useState } from 'react';
-import { Input } from '@/components/ui/input';
+
 import { IconEye, IconEyeOff, IconShieldCancel, IconShieldCheck } from '@tabler/icons-react';
+
+import { Input } from '@/components/ui/input';
 
 export default function SIPasswordInput({
   value,

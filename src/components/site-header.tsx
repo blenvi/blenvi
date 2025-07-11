@@ -1,7 +1,9 @@
+import { IconBook } from '@tabler/icons-react';
+
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { IconBook } from '@tabler/icons-react';
+
 import { ModeToggle } from './theme-toggle';
 
 export function SiteHeader({ route }: Readonly<{ route?: string }>) {

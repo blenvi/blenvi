@@ -1,13 +1,15 @@
 'use client';
 
 import * as React from 'react';
+
 import { NavIntegrations } from '@/components/nav-integrations';
 import { NavMain } from '@/components/nav-main';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
-import { Switcher } from './switcher';
 import { mockData, navMain, navSecondary } from '@/constants';
+
+import { Switcher } from './switcher';
 
 interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
   activeTeamId: string;

@@ -1,10 +1,11 @@
 'use client';
 
 import * as React from 'react';
+
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+import { IconCheck } from '@tabler/icons-react';
 
 import { cn } from '@/lib/utils';
-import { IconCheck } from '@tabler/icons-react';
 
 function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
   return (

@@ -1,5 +1,11 @@
 'use client';
 
+import { type FC, memo, useMemo } from 'react';
+
+import { usePathname, useRouter } from 'next/navigation';
+
+import { IconPlus, IconSelector } from '@tabler/icons-react';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +21,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { IconPlus, IconSelector } from '@tabler/icons-react';
-import { usePathname, useRouter } from 'next/navigation';
-import { type FC, memo, useMemo } from 'react';
 
 type Project = {
   id: string;

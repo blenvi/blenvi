@@ -1,8 +1,15 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
+import { useState } from 'react';
+
+import Link from 'next/link';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
+
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -12,13 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { toast } from 'sonner';
-import Link from 'next/link';
+import { Input } from '@/components/ui/input';
+import { createClient } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
+
 import { Icons } from '../ui/icons';
 
 const formSchema = z.object({

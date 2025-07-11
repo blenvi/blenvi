@@ -1,5 +1,6 @@
-import { buttonVariants } from '@/components/ui/button';
-import { createClient } from '@/lib/supabase/server';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import {
   IconBrandNextjs,
   IconBrandSupabase,
@@ -7,8 +8,9 @@ import {
   IconBrandTypescript,
   IconCircleChevronRight,
 } from '@tabler/icons-react';
-import Image from 'next/image';
-import Link from 'next/link';
+
+import { buttonVariants } from '@/components/ui/button';
+import { createClient } from '@/lib/supabase/server';
 
 const brands = [
   { href: 'https://nextjs.org', icon: <IconBrandNextjs />, label: 'Next.js' },

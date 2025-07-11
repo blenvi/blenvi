@@ -1,6 +1,7 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
+import importPlugin from 'eslint-plugin-import-x';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,17 +14,47 @@ const eslintConfig = [
   // Base Next.js ESLint configuration
   ...compat.extends('next/core-web-vitals'),
 
+  // Import plugin
+  {
+    plugins: {
+      'import-x': importPlugin,
+    },
+    rules: {},
+  },
+
   // Add simple formatting and code quality rules
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
-      // Import sorting
-      'sort-imports': [
+      // Import sorting - disable the built-in rule since we'll use import-x
+      'sort-imports': 'off',
+      'import-x/order': [
         'error',
         {
-          ignoreCase: true,
-          ignoreDeclarationSort: true,
-          ignoreMemberSort: false,
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'type'],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+          pathGroups: [
+            {
+              pattern: 'react',
+              group: 'builtin',
+              position: 'before',
+            },
+            {
+              pattern: 'next/**',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: '@/**',
+              group: 'internal',
+              position: 'after',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['react'],
         },
       ],
 

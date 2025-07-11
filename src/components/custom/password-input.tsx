@@ -1,8 +1,10 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { Input } from '@/components/ui/input';
+
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
+
+import { Input } from '@/components/ui/input';
 
 export default function PasswordInput({
   ...props
