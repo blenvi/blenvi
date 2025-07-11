@@ -1,0 +1,68 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Next.js build output
+.next
+out
+
+# Git files
+.git
+.gitignore
+
+# Editor directories and files
+.idea
+.vscode
+**/.vs
+**/.classpath
+**/.project
+**/.settings
+**/.toolstarget
+
+# Development files
+.editorconfig
+.eslintrc
+eslint.config.mjs
+.eslintignore
+.prettierrc.json
+.prettierignore
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker files
+docker-compose*
+compose.y*ml
+Dockerfile*
+.dockerignore
+
+# Build and cache
+**/.cache
+**/*.*proj.user
+**/*.dbmdl
+**/*.jfm
+**/charts
+**/obj
+**/secrets.dev.yaml
+**/values.dev.yaml
+**/build
+**/dist
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Husky
+.husky
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Documentation
+LICENSE
+README.md
+CODE_OF_CONDUCT.md

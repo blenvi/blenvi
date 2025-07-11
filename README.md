@@ -199,6 +199,33 @@ Blenvi includes built-in dark/light theme support with:
 - Uptime tracking
 - Data flow visualization
 
+## 🐳 Docker Support
+
+Blenvi comes with Docker support out of the box, making it easy to run the application in both development and production environments.
+
+### Development Environment
+
+Run the application in development mode with hot-reloading:
+
+```bash
+docker compose up dev
+```
+
+### Production Environment
+
+Build and run the application in production mode:
+
+```bash
+docker compose up prod
+```
+
+### Docker Commands
+
+- **Build the images**: `docker compose build`
+- **Stop all containers**: `docker compose down`
+- **View logs**: `docker compose logs -f [dev|prod]`
+- **Rebuild and restart**: `docker compose up -d --build [dev|prod]`
+
 ## 🤝 Contributing
 
 1. Fork the repository
