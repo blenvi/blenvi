@@ -3,6 +3,8 @@ import * as React from 'react';
 import './globals.css';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import NextTopLoader from 'nextjs-toploader';
+
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -37,6 +39,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <NextTopLoader color="currentColor" showSpinner={false} />
           {children}
           <Toaster />
         </ThemeProvider>

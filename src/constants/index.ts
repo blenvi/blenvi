@@ -11,7 +11,6 @@ import {
   IconHelp,
   IconSearch,
   IconSettings,
-  IconUser,
   IconUsersGroup,
 } from '@tabler/icons-react';
 
@@ -25,13 +24,11 @@ export const mockData = {
     {
       id: '550e8400-e29b-41d4-a716-446655440000',
       name: 'Personal Workspace',
-      logo: IconUser,
       plan: 'Free',
       project: [
         {
           id: '67e55044-10b1-426f-9247-bb680e5fe0c8',
           name: 'Project 1',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -74,7 +71,6 @@ export const mockData = {
         {
           id: 'c2e076d0-716f-44ce-b7d9-aac2c52d9655',
           name: 'Project 2',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -117,7 +113,6 @@ export const mockData = {
         {
           id: '9f7b5622-eac6-4e6b-91a4-759bb7c0cfd0',
           name: 'Project 3',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -162,13 +157,11 @@ export const mockData = {
     {
       id: '63a9f0ea-7bb3-4dfc-8dca-0ed7d9ee3f6c',
       name: 'Team Workspace',
-      logo: IconUsersGroup,
       plan: 'Pro',
       project: [
         {
           id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
           name: 'Project 4',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -211,7 +204,6 @@ export const mockData = {
         {
           id: 'd0ba094b-1b21-4562-a210-3539bca287a6',
           name: 'Project 5',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -254,7 +246,6 @@ export const mockData = {
         {
           id: '3a3d89b1-a76f-4b3b-a29e-36e2096bf5a1',
           name: 'Project 6',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -299,13 +290,11 @@ export const mockData = {
     {
       id: '4d829678-354f-45d8-a336-527bcf7ab45d',
       name: 'Enterprise Workspace',
-      logo: IconUsersGroup,
       plan: 'Enterprise',
       project: [
         {
           id: '186c7934-2d16-442f-abc7-f982d8531a60',
           name: 'Project 7',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -348,7 +337,6 @@ export const mockData = {
         {
           id: 'b426cda8-a51e-4ac2-95e7-599dfb239c1a',
           name: 'Project 8',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {
@@ -391,7 +379,6 @@ export const mockData = {
         {
           id: 'e85f8c04-57ce-4964-9689-1a8193212d54',
           name: 'Project 9',
-          logo: IconBinoculars,
           plan: 'Free',
           integrations: [
             {

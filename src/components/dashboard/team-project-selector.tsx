@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 import {
   IconAlertCircle,
@@ -14,145 +14,19 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-
-// Mock data structure
-interface Team {
-  id: string;
-  name: string;
-  description: string;
-  role: string;
-  memberCount: number;
-  avatar?: string;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  status: 'active' | 'inactive' | 'archived';
-  lastUpdated: string;
-  framework?: string;
-}
-
-const mockTeams: Team[] = [
-  {
-    id: '1',
-    name: 'Acme Corporation',
-    description: 'Main company workspace',
-    role: 'Owner',
-    memberCount: 12,
-  },
-  {
-    id: '2',
-    name: 'Design Team',
-    description: 'Creative projects and design systems',
-    role: 'Admin',
-    memberCount: 5,
-  },
-  {
-    id: '3',
-    name: 'Personal',
-    description: 'Your personal projects',
-    role: 'Owner',
-    memberCount: 1,
-  },
-];
-
-const mockProjects: Record<string, Project[]> = {
-  '1': [
-    {
-      id: 'p1',
-      name: 'Marketing Website',
-      description: 'Company marketing site built with Next.js',
-      status: 'active',
-      lastUpdated: '2 hours ago',
-      framework: 'Next.js',
-    },
-    {
-      id: 'p2',
-      name: 'Dashboard App',
-      description: 'Internal analytics dashboard',
-      status: 'active',
-      lastUpdated: '1 day ago',
-      framework: 'React',
-    },
-    {
-      id: 'p3',
-      name: 'API Gateway',
-      description: 'Microservices API gateway',
-      status: 'inactive',
-      lastUpdated: '1 week ago',
-      framework: 'Node.js',
-    },
-  ],
-  '2': [
-    {
-      id: 'p4',
-      name: 'Design System',
-      description: 'Component library and design tokens',
-      status: 'active',
-      lastUpdated: '3 hours ago',
-      framework: 'Storybook',
-    },
-    {
-      id: 'p5',
-      name: 'Brand Guidelines',
-      description: 'Brand assets and style guide',
-      status: 'active',
-      lastUpdated: '2 days ago',
-    },
-  ],
-  '3': [
-    {
-      id: 'p6',
-      name: 'Portfolio Site',
-      description: 'Personal portfolio website',
-      status: 'active',
-      lastUpdated: '5 hours ago',
-      framework: 'Next.js',
-    },
-  ],
-};
+import { useWorkspaceStore, Team, Project } from '@/stores/workspace';
 
 export default function TeamProjectSelector() {
-  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoadingProjects, setIsLoadingProjects] = useState(false);
-  const [teams] = useState<Team[]>(mockTeams);
-
-  useEffect(() => {
-    if (selectedTeam) {
-      setIsLoadingProjects(true);
-      setSelectedProject(null);
-      setTimeout(() => {
-        setProjects(mockProjects[selectedTeam.id] || []);
-        setIsLoadingProjects(false);
-      }, 500);
-    } else {
-      setProjects([]);
-      setSelectedProject(null);
-    }
-  }, [selectedTeam]);
+  // Get state and actions from Zustand store
+  const { teams, projects, selectedTeam, selectedProject, selectTeam, selectProject } =
+    useWorkspaceStore();
 
   const handleTeamSelect = (team: Team) => {
-    setSelectedTeam(team);
+    selectTeam(team.id);
   };
 
   const handleProjectSelect = (project: Project) => {
-    setSelectedProject(project);
-  };
-
-  const handleContinue = () => {
-    if (selectedTeam && selectedProject) {
-      // Navigate to next step
-      console.log('Continuing with:', {
-        team: selectedTeam,
-        project: selectedProject,
-      });
-      alert(`Continuing with ${selectedTeam.name} - ${selectedProject.name}`);
-    }
+    selectProject(project.id);
   };
 
   const renderTeamSelection = () => {
@@ -201,7 +75,7 @@ export default function TeamProjectSelector() {
               <div className="text-muted-foreground flex items-center justify-between text-sm">
                 <div className="flex items-center gap-1">
                   <IconUsers className="h-3 w-3" />
-                  <span>{team.memberCount} members</span>
+                  <span>{team.project?.length || 0} projects</span>
                 </div>
                 <Badge variant="secondary" className="text-xs">
                   {team.role}
@@ -226,28 +100,9 @@ export default function TeamProjectSelector() {
       );
     }
 
-    if (isLoadingProjects) {
-      return (
-        <div className="grid gap-3 md:grid-cols-2">
-          {[1, 2, 3].map(i => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-full" />
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-3 w-16" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      );
-    }
+    const teamProjects = selectedTeam ? projects[selectedTeam.id] || [] : [];
 
-    if (projects.length === 0) {
+    if (teamProjects.length === 0) {
       return (
         <Alert>
           <IconAlertCircle className="h-4 w-4" />
@@ -260,7 +115,7 @@ export default function TeamProjectSelector() {
 
     return (
       <div className="grid gap-3 md:grid-cols-2">
-        {projects.map(project => (
+        {teamProjects.map(project => (
           <Card
             key={project.id}
             className={`hover:bg-primary/5 cursor-pointer transition-colors ${
@@ -341,14 +196,14 @@ export default function TeamProjectSelector() {
 
         {/* Continue Button */}
         <div className="flex justify-end border-t pt-6">
-          <Button
-            onClick={handleContinue}
-            disabled={!selectedTeam || !selectedProject}
-            size="lg"
-            className="min-w-32"
-          >
-            Continue
-            <IconChevronRight className="ml-2 h-4 w-4" />
+          <Button disabled={!selectedTeam || !selectedProject} size="lg" asChild>
+            <Link
+              href={`/dashboard/${selectedTeam?.id}/${selectedProject?.id}`}
+              className="flex items-center justify-center"
+            >
+              Continue
+              <IconChevronRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </div>
@@ -359,13 +214,19 @@ export default function TeamProjectSelector() {
           <h3 className="mb-2 font-medium">Current Selection:</h3>
           <div className="text-muted-foreground space-y-1 text-sm">
             {selectedTeam && (
-              <div>
+              <div className="flex items-center gap-2">
                 Team: <span className="text-foreground font-medium">{selectedTeam.name}</span>
+                <Badge variant="outline" className="ml-1">
+                  {selectedTeam.plan}
+                </Badge>
               </div>
             )}
             {selectedProject && (
-              <div>
+              <div className="flex items-center gap-2">
                 Project: <span className="text-foreground font-medium">{selectedProject.name}</span>
+                <Badge variant="outline" className="ml-1">
+                  {selectedProject.plan}
+                </Badge>
               </div>
             )}
           </div>

@@ -31,13 +31,7 @@ const brands = [
   },
 ];
 
-export default async function Hero({
-  teamId,
-  projectId,
-}: Readonly<{
-  teamId: string;
-  projectId: string;
-}>) {
+export default async function Hero() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   return (
@@ -65,7 +59,7 @@ export default async function Hero({
             </div>
             {data.user ? (
               <div className="flex justify-center gap-4">
-                <Link href={`/dashboard/${teamId}/${projectId}`} className={buttonVariants()}>
+                <Link href="/dashboard" className={buttonVariants()}>
                   Get to Dashboard <IconCircleChevronRight className="ml-2" />
                 </Link>
                 <Link href="#" className={buttonVariants({ variant: 'outline' })}>

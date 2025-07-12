@@ -25,14 +25,15 @@ import {
 type Project = {
   id: string;
   name: string;
-  logo: React.ElementType;
+  logo?: React.ElementType;
   plan: string;
+  integrations?: any[];
 };
 
 type Item = {
   id: string;
   name: string;
-  logo: React.ElementType;
+  logo?: React.ElementType;
   plan: string;
   project?: Project[];
 };
@@ -48,10 +49,7 @@ const DropdownItem: FC<{
   index: number;
   onClick: () => void;
 }> = memo(({ item, index, onClick }) => (
-  <DropdownMenuItem onClick={onClick} className="gap-2 p-2">
-    <div className="flex size-6 items-center justify-center rounded-sm border">
-      <item.logo className="size-4 shrink-0" />
-    </div>
+  <DropdownMenuItem onClick={onClick} className="p-2">
     {item.name}
     <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
   </DropdownMenuItem>
@@ -65,13 +63,14 @@ export function Switcher({ items, activeTeamId, activeProjectId }: Readonly<Swit
   const pathname = usePathname();
 
   const activeItem = useMemo(() => {
+    if (!items || items.length === 0) return null;
     return (
       items.find(item => (item.project ? item.id === activeTeamId : item.id === activeProjectId)) ||
       items[0]
     );
   }, [items, activeTeamId, activeProjectId]);
 
-  if (!activeTeamId && !activeProjectId) {
+  if ((!activeTeamId && !activeProjectId) || !activeItem) {
     return null;
   }
 
@@ -97,10 +96,7 @@ export function Switcher({ items, activeTeamId, activeProjectId }: Readonly<Swit
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeItem.logo className="size-4" />
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{activeItem.name}</span>
                 <span className="truncate text-xs">{activeItem.plan}</span>
               </div>

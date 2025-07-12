@@ -23,8 +23,8 @@ export function NavMain({
     url: string;
     icon?: Icon;
   }[];
-  activeProjectId: string;
-  activeTeamId: string;
+  activeProjectId?: string;
+  activeTeamId?: string;
 }>) {
   const pathname = usePathname();
   return (
@@ -45,7 +45,7 @@ export function NavMain({
           {items.map(item => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton tooltip={item.title} asChild isActive={pathname === item.url}>
-                <Link href={`/dashboard/${activeTeamId}/${activeProjectId}${item.url}`}>
+                <Link href={`/dashboard/${activeTeamId || ''}/${activeProjectId || ''}${item.url}`}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>

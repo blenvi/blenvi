@@ -31,8 +31,8 @@ export function NavIntegrations({
     name: string;
     icon: Icon;
   }[];
-  activeProjectId: string;
-  activeTeamId: string;
+  activeProjectId?: string;
+  activeTeamId?: string;
 }>) {
   const { isMobile } = useSidebar();
 
@@ -43,7 +43,9 @@ export function NavIntegrations({
         {items.map(item => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <Link href={`/dashboard/${activeTeamId}/${activeProjectId}/integration/${item.slug}`}>
+              <Link
+                href={`/dashboard/${activeTeamId || ''}/${activeProjectId || ''}/integration/${item.slug}`}
+              >
                 <item.icon />
                 <span>{item.name}</span>
               </Link>
