@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 
 import { notFound } from 'next/navigation';
 
+import AccountPage from '@/components/pages/account-page';
 import IntegrationPage from '@/components/pages/integration';
 import OverviewPage from '@/components/pages/overview-page';
 import TeamPage from '@/components/pages/team-page';
@@ -41,6 +42,12 @@ export default async function DashboardPage({
       return (
         <Suspense fallback={<div>Loading...</div>}>
           <WorkflowPage />
+        </Suspense>
+      );
+    case 'account':
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <AccountPage />
         </Suspense>
       );
     case 'integration':

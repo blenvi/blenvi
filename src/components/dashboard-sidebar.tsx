@@ -60,7 +60,11 @@ export function DashboardSidebar({
         <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={mockData.user} />
+        <NavUser
+          activeProjectId={activeProjectId}
+          activeTeamId={activeTeamId}
+          user={mockData.user}
+        />
       </SidebarFooter>
     </Sidebar>
   );

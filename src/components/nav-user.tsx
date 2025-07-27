@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import {
   IconCreditCard,
   IconDotsVertical,
@@ -27,12 +29,16 @@ import {
 
 export function NavUser({
   user,
+  activeProjectId,
+  activeTeamId,
 }: Readonly<{
   user: {
     name: string;
     email: string;
     avatar: string;
   };
+  activeProjectId?: string;
+  activeTeamId?: string;
 }>) {
   const { isMobile } = useSidebar();
 
@@ -76,9 +82,11 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <IconUserCircle />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href={`/dashboard/${activeTeamId}/${activeProjectId}/account`}>
+                  <IconUserCircle />
+                  Account
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconCreditCard />
