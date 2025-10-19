@@ -1,0 +1,28 @@
+{
+  "recommendations": [
+    // Essential for development
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "ms-vscode.vscode-typescript-next",
+
+    // React/Next.js development
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-json",
+
+    // Git and collaboration
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+
+    // Code quality
+    "streetsidesoftware.code-spell-checker",
+    "gruntfuggly.todo-tree",
+
+    // Productivity
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-npm-scripts",
+
+    // Monorepo support
+    "ms-vscode-remote.remote-containers"
+  ]
+}
