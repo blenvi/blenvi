@@ -4,3 +4,9 @@
 [submodule "apps/api"]
 	path = apps/api
 	url = https://github.com/blenvi/api.git
+[submodule "apps/native"]
+	path = apps/native
+	url = https://github.com/blenvi/native.git
+[submodule "apps/docs"]
+	path = apps/docs
+	url = https://github.com/blenvi/docs.git
