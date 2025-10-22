@@ -15,11 +15,12 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.8",
-    "typescript": "5.9.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.2"
+    "lint-staged": "^16.2.5",
+    "prettier": "^3.6.2",
+    "shadcn": "^3.4.2",
+    "turbo": "^2.5.8",
+    "typescript": "5.9.3"
   },
   "engines": {
     "node": ">=18"
