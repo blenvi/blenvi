@@ -1,0 +1,45 @@
+# .vercelignore
+# Files and directories to ignore during Vercel deployment
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+.nyc_output/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+**/__tests__/
+**/__mocks__/
+test/
+tests/
+
+# Build artifacts from other apps (monorepo)
+apps/*/dist/
+apps/*/.next/
+apps/*/out/
+apps/*/build/
+
+# Misc
+.DS_Store
+*.pem
+.env*.local
+.vscode/
+.idea/
+
+# Netlify
+netlify/
+.netlify/
+netlify.toml
+
+# Turbo
+.turbo/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,56 @@
+# Vercel Production Deployment
+# This workflow provides status checks for Vercel production deployments
+# Actual deployment is handled by Vercel's Git integration
+
+name: Vercel Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # Validate all apps build successfully
+  validate-builds:
+    name: Validate Production Builds
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint all packages
+        run: npm run lint
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Build Web App
+        run: npm run build --filter=web
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Build Docs
+        run: npm run build --filter=docs
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Generate Job Summary
+        run: |
+          echo "## ✅ Production Build Successful" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All apps built successfully. Vercel will now deploy to production." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| App | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Web App | ✅ Built |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docs | ✅ Built |" >> $GITHUB_STEP_SUMMARY

@@ -127,49 +127,49 @@ pnpm exec turbo link
 
 ## 🚀 Deployment
 
-This monorepo is deployed on **Netlify** for all applications.
+This monorepo is deployed on **Vercel** for optimal Next.js performance.
 
 ### 📚 Deployment Guides
 
-#### Netlify - Recommended ⭐
+#### Vercel - Recommended ⭐
 
-Deploy all apps (web, docs, and API) on Netlify:
+Deploy all Next.js apps (web and docs) on Vercel:
 
-- 📖 **[Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md)** - Complete setup instructions
-- 🔍 **[Netlify Quick Reference](./NETLIFY_QUICK_REFERENCE.md)** - Commands and configurations
+- � **[Quick Start Guide](./VERCEL_QUICKSTART.md)** - Get started in 5 minutes
+- � **[Complete Migration Guide](./VERCEL_MIGRATION.md)** - Full migration from Netlify to Vercel
 
 ### 🎯 Deployment Setup
 
-All applications deployed on Netlify:
+Applications deployed on Vercel:
 
 ```
-Netlify (Free tier available):
-├── Web App (apps/web)
-├── Docs (apps/docs)
-└── API (apps/api)
+Vercel (Free tier available):
+├── Web App (apps/web) - Next.js with Supabase
+├── Docs (apps/docs) - Fumadocs
+└── API (apps/api) - Deploy separately (Railway, Render, etc.)
 ```
 
-**Total Cost**: Free tier available, scalable pricing
+**Total Cost**: Free tier includes 6,000 build minutes/month
 
-### Quick Deploy to Netlify
+### Quick Deploy to Vercel
 
 ```powershell
-# Install Netlify CLI
-npm install -g netlify-cli
+# Install Vercel CLI
+npm install -g vercel@latest
 
 # Login
-netlify login
+vercel login
 
-# Initialize each app
-netlify init
+# Run setup script
+.\scripts\setup-vercel.ps1
 ```
 
-See the [Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md) for detailed instructions on:
+See the [Quick Start Guide](./VERCEL_QUICKSTART.md) for:
 
-- Linking GitHub repositories to Netlify sites
-- Configuring build settings
-- Setting up environment variables
-- Monitoring deployments
+- Step-by-step Vercel project setup
+- Environment variable configuration
+- Preview and production deployments
+- Troubleshooting common issues
 
 ## 🌍 Environment Variables
 
@@ -189,9 +189,8 @@ See individual app directories for required environment variables.
 
 ### Deployment
 
-- **Netlify**: [NETLIFY_DEPLOYMENT.md](./NETLIFY_DEPLOYMENT.md) | [Quick Ref](./NETLIFY_QUICK_REFERENCE.md)
-- **Post-Deploy**: [POST_DEPLOYMENT_CHECKLIST.md](./POST_DEPLOYMENT_CHECKLIST.md)
-- **GitHub Linking**: [LINK_GITHUB_TO_NETLIFY.md](./LINK_GITHUB_TO_NETLIFY.md)
+- **Vercel**: [Quick Start](./VERCEL_QUICKSTART.md) | [Migration Guide](./VERCEL_MIGRATION.md)
+- **Legacy Netlify**: Documentation available for reference
 
 ### App Documentation
 
@@ -205,8 +204,8 @@ See individual app directories for required environment variables.
 - **Database**: Supabase (PostgreSQL)
 - **Mobile**: React Native (Expo)
 - **Monorepo**: Turborepo
-- **Deployment**: Netlify
-- **CI/CD**: GitHub Actions
+- **Deployment**: Vercel (Next.js apps)
+- **CI/CD**: GitHub Actions + Vercel
 
 ## Useful Links
 
@@ -216,5 +215,5 @@ Learn more about the tools used in this project:
 - [Next.js Documentation](https://nextjs.org/docs)
 - [NestJS Documentation](https://docs.nestjs.com/)
 - [Supabase Documentation](https://supabase.com/docs)
-- [Netlify Documentation](https://docs.netlify.com/)
+- [Vercel Documentation](https://vercel.com/docs)
 - [shadcn/ui Components](https://ui.shadcn.com/)
