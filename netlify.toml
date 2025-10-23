@@ -6,7 +6,7 @@
   # Build command runs from the base directory
   # Dependencies are installed from monorepo root automatically
   command = "cd ../.. && npm install && cd - && npm run build"
-  
+
   # Publish directory relative to base directory
   publish = ".next"
 
