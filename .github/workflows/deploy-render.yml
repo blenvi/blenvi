@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -37,10 +37,24 @@ jobs:
       - name: Type check
         run: npm run type-check
 
-      - name: Build all packages
-        run: npm run build
+      - name: Build Web App
+        run: npm run build --filter=web
         env:
-          # Add any required build-time environment variables
+          SKIP_ENV_VALIDATION: true
+
+      - name: Build Docs
+        run: npm run build --filter=docs
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Build API
+        run: npm run build --filter=api
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Build Storybook (Static Site)
+        run: npm run build-storybook --filter=storybook
+        env:
           SKIP_ENV_VALIDATION: true
 
   # Optional: Trigger Render deployment via Deploy Hook
