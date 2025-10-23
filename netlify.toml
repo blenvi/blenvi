@@ -1,0 +1,21 @@
+# Netlify Configuration for Web App (blenvi-web)
+# Place this file at repository root for proper detection
+
+[build]
+  # Build command for monorepo - run from repository root
+  command = "npm install && cd apps/web && npm run build"
+
+  # Publish directory - relative to repository root
+  publish = "apps/web/.next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10.9.2"
+
+# Environment variables (set actual values in Netlify UI)
+# NEXT_PUBLIC_SUPABASE_URL
+# NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+# Essential Next.js Runtime Plugin for Netlify
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
