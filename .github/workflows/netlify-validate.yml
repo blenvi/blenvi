@@ -84,10 +84,21 @@ jobs:
     name: Deployment Report
     runs-on: ubuntu-latest
     needs: check-changes
-    if: github.event_name == 'pull_request'
 
     steps:
+      - name: Generate Job Summary
+        run: |
+          echo "## 🚀 Netlify Deployment Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| App | Will Deploy | Changed Files |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|-------------|---------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Web App | ${{ needs.check-changes.outputs.web == 'true' && '✅ Yes' || '⏭️ Skip' }} | ${{ needs.check-changes.outputs.web == 'true' && 'Detected' || 'None' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docs | ${{ needs.check-changes.outputs.docs == 'true' && '✅ Yes' || '⏭️ Skip' }} | ${{ needs.check-changes.outputs.docs == 'true' && 'Detected' || 'None' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> Netlify will automatically deploy preview URLs for apps with changes." >> $GITHUB_STEP_SUMMARY
+
       - name: Comment on PR
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
