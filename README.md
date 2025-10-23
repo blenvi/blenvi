@@ -19,7 +19,6 @@ This Turborepo includes the following packages/apps:
 - `api`: a [NestJS](https://nestjs.com/) backend API
 - `web`: a [Next.js](https://nextjs.org/) web application with Supabase integration
 - `docs`: a [Fumadocs](https://fumadocs.vercel.app/) documentation site
-- `storybook`: a [Storybook](https://storybook.js.org/) component library
 - `native`: a [React Native](https://reactnative.dev/) mobile app (Expo)
 - `@repo/ui`: a shared React component library using shadcn/ui
 - `@repo/eslint-config`: shared `eslint` configurations
@@ -134,7 +133,7 @@ This monorepo is deployed on **Netlify** for all applications.
 
 #### Netlify - Recommended ⭐
 
-Deploy all apps (web, docs, storybook, and API) on Netlify:
+Deploy all apps (web, docs, and API) on Netlify:
 
 - 📖 **[Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md)** - Complete setup instructions
 - 🔍 **[Netlify Quick Reference](./NETLIFY_QUICK_REFERENCE.md)** - Commands and configurations
@@ -147,7 +146,6 @@ All applications deployed on Netlify:
 Netlify (Free tier available):
 ├── Web App (apps/web)
 ├── Docs (apps/docs)
-├── Storybook (apps/storybook)
 └── API (apps/api)
 ```
 
