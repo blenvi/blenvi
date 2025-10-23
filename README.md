@@ -128,45 +128,30 @@ pnpm exec turbo link
 
 ## 🚀 Deployment
 
-This monorepo supports deployment on both **Netlify** (recommended for frontend) and **Render** (recommended for backend).
+This monorepo is deployed on **Netlify** for all applications.
 
 ### 📚 Deployment Guides
 
-#### Netlify (Frontend) - Recommended ⭐
+#### Netlify - Recommended ⭐
 
-Perfect for deploying the web app, docs, and storybook:
+Deploy all apps (web, docs, storybook, and API) on Netlify:
 
 - 📖 **[Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md)** - Complete setup instructions
 - 🔍 **[Netlify Quick Reference](./NETLIFY_QUICK_REFERENCE.md)** - Commands and configurations
 
-#### Render (Backend/Full-stack)
+### 🎯 Deployment Setup
 
-Great for the NestJS API and full-stack deployments:
-
-- 📖 **[Render Deployment Guide](./DEPLOYMENT.md)** - Complete setup instructions
-- 🔍 **[Render Quick Reference](./RENDER_QUICK_REFERENCE.md)** - Commands and configurations
-
-#### Platform Comparison
-
-Not sure which to use?
-
-- 🤔 **[Platform Comparison Guide](./PLATFORM_COMPARISON.md)** - Detailed comparison to help you choose
-
-### 🎯 Recommended Hybrid Setup
-
-For optimal performance and cost:
+All applications deployed on Netlify:
 
 ```
-Frontend (Netlify - Free):
+Netlify (Free tier available):
 ├── Web App (apps/web)
 ├── Docs (apps/docs)
-└── Storybook (apps/storybook)
-
-Backend (Render - $7/month):
+├── Storybook (apps/storybook)
 └── API (apps/api)
 ```
 
-**Total Cost**: $7/month for production-ready setup
+**Total Cost**: Free tier available, scalable pricing
 
 ### Quick Deploy to Netlify
 
@@ -181,13 +166,12 @@ netlify login
 netlify init
 ```
 
-### Quick Deploy to Render
+See the [Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md) for detailed instructions on:
 
-1. Connect your GitHub repository to [Render](https://dashboard.render.com/)
-2. Create a new Blueprint
-3. Select your repository - Render will detect `render.yaml`
-4. Configure environment variables
-5. Click "Apply" to deploy all services
+- Linking GitHub repositories to Netlify sites
+- Configuring build settings
+- Setting up environment variables
+- Monitoring deployments
 
 ## 🌍 Environment Variables
 
@@ -208,9 +192,8 @@ See individual app directories for required environment variables.
 ### Deployment
 
 - **Netlify**: [NETLIFY_DEPLOYMENT.md](./NETLIFY_DEPLOYMENT.md) | [Quick Ref](./NETLIFY_QUICK_REFERENCE.md)
-- **Render**: [DEPLOYMENT.md](./DEPLOYMENT.md) | [Quick Ref](./RENDER_QUICK_REFERENCE.md)
-- **Comparison**: [PLATFORM_COMPARISON.md](./PLATFORM_COMPARISON.md)
 - **Post-Deploy**: [POST_DEPLOYMENT_CHECKLIST.md](./POST_DEPLOYMENT_CHECKLIST.md)
+- **GitHub Linking**: [LINK_GITHUB_TO_NETLIFY.md](./LINK_GITHUB_TO_NETLIFY.md)
 
 ### App Documentation
 
@@ -224,7 +207,7 @@ See individual app directories for required environment variables.
 - **Database**: Supabase (PostgreSQL)
 - **Mobile**: React Native (Expo)
 - **Monorepo**: Turborepo
-- **Deployment**: Netlify (Frontend) + Render (Backend)
+- **Deployment**: Netlify
 - **CI/CD**: GitHub Actions
 
 ## Useful Links
@@ -235,5 +218,5 @@ Learn more about the tools used in this project:
 - [Next.js Documentation](https://nextjs.org/docs)
 - [NestJS Documentation](https://docs.nestjs.com/)
 - [Supabase Documentation](https://supabase.com/docs)
-- [Render Documentation](https://render.com/docs)
+- [Netlify Documentation](https://docs.netlify.com/)
 - [shadcn/ui Components](https://ui.shadcn.com/)
