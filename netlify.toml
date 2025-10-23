@@ -1,12 +1,13 @@
 # Root Netlify Configuration for Monorepo
 # This configuration will be used by default for all sites
-# Netlify will automatically detect which app to build based on the site settings
+# Important: Set Base Directory in Netlify UI to apps/web or apps/docs
 
 [build]
-  # Default build command (override in Netlify UI for specific sites)
-  command = "npm install && npm run build"
+  # Build command runs from the base directory
+  # Dependencies are installed from monorepo root automatically
+  command = "cd ../.. && npm install && cd - && npm run build"
   
-  # Publish directory will be overridden per site in Netlify UI
+  # Publish directory relative to base directory
   publish = ".next"
 
 [build.environment]
