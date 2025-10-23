@@ -2,8 +2,8 @@
 # Documentation: https://docs.netlify.com/build/configure-builds/file-based-configuration/
 
 [build]
-  # Build command runs in repository root
-  command = "npm run build-storybook --filter=storybook"
+  # Build command - only build storybook, skip other apps
+  command = "npx turbo run build-storybook --filter=storybook... --filter=!web --filter=!docs --filter=!api --filter=!native"
 
   # Publish directory relative to repository root
   publish = "apps/storybook/storybook-static"
