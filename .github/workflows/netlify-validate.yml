@@ -1,0 +1,125 @@
+# Netlify Build Validation
+# This workflow validates builds before Netlify deploys
+# Netlify handles actual deployment automatically
+
+name: Validate Netlify Builds
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Validate all apps build successfully
+  validate-builds:
+    name: Validate Builds
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint all packages
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Type check
+        run: npm run type-check
+        continue-on-error: true
+
+      - name: Build Web App
+        run: npm run build --filter=web
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Build Docs
+        run: npm run build --filter=docs
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Build Storybook
+        run: npm run build-storybook --filter=storybook
+        env:
+          SKIP_ENV_VALIDATION: true
+
+  # Check if builds are needed based on changed files
+  check-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.filter.outputs.web }}
+      docs: ${{ steps.filter.outputs.docs }}
+      storybook: ${{ steps.filter.outputs.storybook }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            web:
+              - 'apps/web/**'
+              - 'packages/ui/**'
+              - 'packages/typescript-config/**'
+              - 'packages/eslint-config/**'
+              - 'package.json'
+              - 'turbo.json'
+            docs:
+              - 'apps/docs/**'
+              - 'packages/typescript-config/**'
+              - 'packages/eslint-config/**'
+              - 'package.json'
+              - 'turbo.json'
+            storybook:
+              - 'apps/storybook/**'
+              - 'packages/ui/**'
+              - 'packages/typescript-config/**'
+              - 'packages/eslint-config/**'
+              - 'package.json'
+              - 'turbo.json'
+
+  # Report which apps will be deployed
+  report:
+    name: Deployment Report
+    runs-on: ubuntu-latest
+    needs: check-changes
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const web = '${{ needs.check-changes.outputs.web }}' === 'true';
+            const docs = '${{ needs.check-changes.outputs.docs }}' === 'true';
+            const storybook = '${{ needs.check-changes.outputs.storybook }}' === 'true';
+
+            let comment = '## 🚀 Netlify Deployment Status\n\n';
+            comment += '| App | Will Deploy | Changed Files |\n';
+            comment += '|-----|-------------|---------------|\n';
+            comment += `| Web App | ${web ? '✅ Yes' : '⏭️ Skip'} | ${web ? 'Detected' : 'None'} |\n`;
+            comment += `| Docs | ${docs ? '✅ Yes' : '⏭️ Skip'} | ${docs ? 'Detected' : 'None'} |\n`;
+            comment += `| Storybook | ${storybook ? '✅ Yes' : '⏭️ Skip'} | ${storybook ? 'Detected' : 'None'} |\n`;
+            comment += '\n';
+            comment += '> Netlify will automatically deploy preview URLs for apps with changes.\n';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
