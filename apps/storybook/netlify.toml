@@ -12,7 +12,7 @@
   # Set this in Netlify UI: apps/storybook
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
   NPM_VERSION = "11.6.2"
 
 # Ignore builds - only build when storybook or UI packages change

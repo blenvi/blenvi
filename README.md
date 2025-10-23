@@ -128,25 +128,66 @@ pnpm exec turbo link
 
 ## 🚀 Deployment
 
-This monorepo is configured for deployment on Render with support for multiple services.
+This monorepo supports deployment on both **Netlify** (recommended for frontend) and **Render** (recommended for backend).
 
-📖 **[Read the Deployment Guide](./DEPLOYMENT.md)** for detailed instructions on deploying to Render.
+### 📚 Deployment Guides
 
-🔍 **[Quick Reference Guide](./RENDER_QUICK_REFERENCE.md)** for common commands and configurations.
+#### Netlify (Frontend) - Recommended ⭐
 
-### Quick Deploy
+Perfect for deploying the web app, docs, and storybook:
+
+- 📖 **[Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md)** - Complete setup instructions
+- 🔍 **[Netlify Quick Reference](./NETLIFY_QUICK_REFERENCE.md)** - Commands and configurations
+
+#### Render (Backend/Full-stack)
+
+Great for the NestJS API and full-stack deployments:
+
+- 📖 **[Render Deployment Guide](./DEPLOYMENT.md)** - Complete setup instructions
+- 🔍 **[Render Quick Reference](./RENDER_QUICK_REFERENCE.md)** - Commands and configurations
+
+#### Platform Comparison
+
+Not sure which to use?
+
+- 🤔 **[Platform Comparison Guide](./PLATFORM_COMPARISON.md)** - Detailed comparison to help you choose
+
+### 🎯 Recommended Hybrid Setup
+
+For optimal performance and cost:
+
+```
+Frontend (Netlify - Free):
+├── Web App (apps/web)
+├── Docs (apps/docs)
+└── Storybook (apps/storybook)
+
+Backend (Render - $7/month):
+└── API (apps/api)
+```
+
+**Total Cost**: $7/month for production-ready setup
+
+### Quick Deploy to Netlify
+
+```powershell
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Login
+netlify login
+
+# Initialize each app
+netlify init
+```
+
+### Quick Deploy to Render
 
 1. Connect your GitHub repository to [Render](https://dashboard.render.com/)
 2. Create a new Blueprint
 3. Select your repository - Render will detect `render.yaml`
 4. Configure environment variables
 5. Click "Apply" to deploy all services
-
-Each service will deploy independently with:
-
-- **Root directory** configuration for monorepo support
-- **Build filters** to avoid unnecessary deploys
-- **Automatic deployments** on push to main branch
 
 ## 🌍 Environment Variables
 
@@ -164,8 +205,15 @@ See individual app directories for required environment variables.
 
 ## 📚 Documentation
 
-- **Deployment**: See [DEPLOYMENT.md](./DEPLOYMENT.md)
-- **Quick Reference**: See [RENDER_QUICK_REFERENCE.md](./RENDER_QUICK_REFERENCE.md)
+### Deployment
+
+- **Netlify**: [NETLIFY_DEPLOYMENT.md](./NETLIFY_DEPLOYMENT.md) | [Quick Ref](./NETLIFY_QUICK_REFERENCE.md)
+- **Render**: [DEPLOYMENT.md](./DEPLOYMENT.md) | [Quick Ref](./RENDER_QUICK_REFERENCE.md)
+- **Comparison**: [PLATFORM_COMPARISON.md](./PLATFORM_COMPARISON.md)
+- **Post-Deploy**: [POST_DEPLOYMENT_CHECKLIST.md](./POST_DEPLOYMENT_CHECKLIST.md)
+
+### App Documentation
+
 - **API Documentation**: See [apps/api/README.md](./apps/api/README.md)
 - **Web Documentation**: See [apps/web/README.md](./apps/web/README.md)
 
@@ -176,7 +224,7 @@ See individual app directories for required environment variables.
 - **Database**: Supabase (PostgreSQL)
 - **Mobile**: React Native (Expo)
 - **Monorepo**: Turborepo
-- **Deployment**: Render
+- **Deployment**: Netlify (Frontend) + Render (Backend)
 - **CI/CD**: GitHub Actions
 
 ## Useful Links
