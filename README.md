@@ -1,6 +1,6 @@
-# Turborepo starter
+# Blenvi
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern monorepo built with Turborepo, featuring multiple applications and shared packages.
 
 ## Using this example
 
@@ -16,11 +16,14 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `api`: a [NestJS](https://nestjs.com/) backend API
+- `web`: a [Next.js](https://nextjs.org/) web application with Supabase integration
+- `docs`: a [Fumadocs](https://fumadocs.vercel.app/) documentation site
+- `storybook`: a [Storybook](https://storybook.js.org/) component library
+- `native`: a [React Native](https://reactnative.dev/) mobile app (Expo)
+- `@repo/ui`: a shared React component library using shadcn/ui
+- `@repo/eslint-config`: shared `eslint` configurations
+- `@repo/typescript-config`: shared `tsconfig.json` configurations
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
@@ -123,13 +126,66 @@ yarn exec turbo link
 pnpm exec turbo link
 ```
 
+## 🚀 Deployment
+
+This monorepo is configured for deployment on Render with support for multiple services.
+
+📖 **[Read the Deployment Guide](./DEPLOYMENT.md)** for detailed instructions on deploying to Render.
+
+🔍 **[Quick Reference Guide](./RENDER_QUICK_REFERENCE.md)** for common commands and configurations.
+
+### Quick Deploy
+
+1. Connect your GitHub repository to [Render](https://dashboard.render.com/)
+2. Create a new Blueprint
+3. Select your repository - Render will detect `render.yaml`
+4. Configure environment variables
+5. Click "Apply" to deploy all services
+
+Each service will deploy independently with:
+
+- **Root directory** configuration for monorepo support
+- **Build filters** to avoid unnecessary deploys
+- **Automatic deployments** on push to main branch
+
+## 🌍 Environment Variables
+
+Copy the `.env.example` files in each app directory and configure with your own values:
+
+```bash
+# For web app
+cp apps/web/.env.example apps/web/.env.local
+
+# For API
+cp apps/api/.env.example apps/api/.env
+```
+
+See individual app directories for required environment variables.
+
+## 📚 Documentation
+
+- **Deployment**: See [DEPLOYMENT.md](./DEPLOYMENT.md)
+- **Quick Reference**: See [RENDER_QUICK_REFERENCE.md](./RENDER_QUICK_REFERENCE.md)
+- **API Documentation**: See [apps/api/README.md](./apps/api/README.md)
+- **Web Documentation**: See [apps/web/README.md](./apps/web/README.md)
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 16, React 19, Tailwind CSS 4, shadcn/ui
+- **Backend**: NestJS
+- **Database**: Supabase (PostgreSQL)
+- **Mobile**: React Native (Expo)
+- **Monorepo**: Turborepo
+- **Deployment**: Render
+- **CI/CD**: GitHub Actions
+
 ## Useful Links
 
-Learn more about the power of Turborepo:
+Learn more about the tools used in this project:
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- [Turborepo Documentation](https://turborepo.com/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Render Documentation](https://render.com/docs)
+- [shadcn/ui Components](https://ui.shadcn.com/)
