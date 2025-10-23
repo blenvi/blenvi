@@ -1,0 +1,40 @@
+# Root Netlify Configuration for Monorepo
+# This configuration will be used by default for all sites
+# Netlify will automatically detect which app to build based on the site settings
+
+[build]
+  # Default build command (override in Netlify UI for specific sites)
+  command = "npm install && npm run build"
+  
+  # Publish directory will be overridden per site in Netlify UI
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10.9.2"
+
+# Essential Next.js Runtime Plugin for Netlify
+# This enables SSR, API routes, and proper Next.js functionality
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Headers for security and performance (applies to all sites)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects for API routes
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
