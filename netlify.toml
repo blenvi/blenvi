@@ -1,20 +1,17 @@
 # Root Netlify Configuration for Monorepo
-# This configuration will be used by default for all sites
-# Important: Set Base Directory in Netlify UI to apps/web or apps/docs
+# IMPORTANT: In Netlify UI, set Base Directory to EMPTY/ROOT for all sites
+# The build command and publish paths are relative to repository root
 
 [build]
-  # Build command runs from the base directory
-  # Dependencies are installed from monorepo root automatically
-  command = "cd ../.. && npm install && cd - && npm run build"
+  # Default build command - will be overridden per site in Netlify UI
+  command = "npm install && npm run build"
 
-  # Publish directory relative to base directory
+  # Default publish directory
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
-  NPM_VERSION = "10.9.2"
-
-# Essential Next.js Runtime Plugin for Netlify
+  NPM_VERSION = "10.9.2"# Essential Next.js Runtime Plugin for Netlify
 # This enables SSR, API routes, and proper Next.js functionality
 [[plugins]]
   package = "@netlify/plugin-nextjs"
