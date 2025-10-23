@@ -12,7 +12,7 @@
     "clean": "turbo run clean",
     "check": "npm run format:check && npm run lint && npm run type-check",
     "fix": "npm run format && npm run lint:fix",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "vercel:deploy": "vercel",
     "vercel:deploy:prod": "vercel --prod",
     "vercel:setup": "node scripts/setup-vercel.ps1"
