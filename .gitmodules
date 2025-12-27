@@ -7,3 +7,6 @@
 [submodule "apps/docs"]
 	path = apps/docs
 	url = https://github.com/blenvi/docs.git
+[submodule "apps/api"]
+	path = apps/api
+	url = https://github.com/blenvi/api.git
