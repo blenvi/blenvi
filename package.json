@@ -1,9 +1,9 @@
 {
 	"name": "blenvi",
 	"devDependencies": {
-		"@biomejs/biome": "2.4.12",
-		"@commitlint/cli": "^20.5.0",
-		"@commitlint/config-conventional": "^20.5.0",
+		"@biomejs/biome": "2.4.13",
+		"@commitlint/cli": "^20.5.3",
+		"@commitlint/config-conventional": "^20.5.3",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
 		"turbo": "^2.9.6",
@@ -11,6 +11,11 @@
 	},
 	"engines": {
 		"node": ">=18"
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx,json,css}": [
+			"biome check --write --files-ignore-unknown=true --no-errors-on-unmatched"
+		]
 	},
 	"packageManager": "bun@1.3.13",
 	"private": true,
@@ -22,16 +27,8 @@
 		"check-types": "turbo run check-types",
 		"prepare": "husky"
 	},
-	"lint-staged": {
-		"*.{js,jsx,ts,tsx,json,css}": [
-			"biome check --write --files-ignore-unknown=true --no-errors-on-unmatched"
-		]
-	},
 	"workspaces": [
 		"apps/*",
 		"packages/*"
-	],
-	"dependencies": {
-		"radix-ui": "^1.4.3"
-	}
+	]
 }

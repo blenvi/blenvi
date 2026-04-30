@@ -1,3 +1,8 @@
+import type {
+  LoaderConfig,
+  LoaderOutput,
+  Page as SourcePage,
+} from "fumadocs-core/source";
 import {
   DocsBody,
   DocsDescription,
@@ -12,6 +17,8 @@ import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
 import { gitConfig } from "@/lib/shared";
 import { getPageImage, getPageMarkdownUrl, source } from "@/lib/source";
+
+const relativeLinkSource = source as unknown as LoaderOutput<LoaderConfig>;
 
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const params = await props.params;
@@ -38,7 +45,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
         <MDX
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
-            a: createRelativeLink(source, page),
+            a: createRelativeLink(relativeLinkSource, page as SourcePage),
           })}
         />
       </DocsBody>
