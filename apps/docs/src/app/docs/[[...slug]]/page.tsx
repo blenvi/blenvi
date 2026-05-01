@@ -20,13 +20,19 @@ import { getPageImage, getPageMarkdownUrl, source } from "@/lib/source";
 
 const relativeLinkSource = source as unknown as LoaderOutput<LoaderConfig>;
 
-export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
+export default async function Page(
+  props: Readonly<PageProps<"/docs/[[...slug]]">>,
+) {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
   const MDX = page.data.body;
   const markdownUrl = getPageMarkdownUrl(page).url;
+  const githubUrl =
+    gitConfig.user && gitConfig.repo
+      ? `https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/content/docs/${page.path}`
+      : undefined;
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
@@ -36,10 +42,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
       </DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">
         <MarkdownCopyButton markdownUrl={markdownUrl} />
-        <ViewOptionsPopover
-          markdownUrl={markdownUrl}
-          githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/content/docs/${page.path}`}
-        />
+        <ViewOptionsPopover markdownUrl={markdownUrl} githubUrl={githubUrl} />
       </div>
       <DocsBody>
         <MDX
