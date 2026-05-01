@@ -19,8 +19,8 @@
 		"check-types": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@repo/biome-config": "*",
-		"@repo/typescript-config": "*",
+		"@blenvi/biome-config": "*",
+		"@blenvi/typescript-config": "*",
 		"shadcn": "^4.6.0",
 		"@types/node": "^25.6.0",
 		"@types/react": "19.2.14",
