@@ -8,15 +8,24 @@
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test:poll": "bun run ./scripts/test-poll-cron.ts"
   },
   "dependencies": {
     "@blenvi/ui": "*",
+    "@hookform/resolvers": "^5.2.2",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.105.1",
+    "@tanstack/react-table": "^8.21.3",
+    "immer": "^11.1.4",
     "next": "16.2.4",
     "react": "19.2.5",
-    "react-dom": "19.2.5"
+    "react-dom": "19.2.5",
+    "react-hook-form": "^7.74.0",
+    "recharts": "3.8.0",
+    "swr": "^2.4.1",
+    "zod": "^4.4.1",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

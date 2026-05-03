@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Web App
 
-## Getting Started
+This app powers the Blenvi dashboard.
 
-First, run the development server:
+### Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set `NEXT_PUBLIC_DOCS_URL` if you want the in-app sidebar to link to a
+deployed documentation site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Cron poller security
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The `/api/poll` route is protected using `CRON_SECRET`.
 
-## Learn More
+- In production, set `CRON_SECRET` in Vercel project environment variables.
+- Vercel cron can call `/api/poll`; the route accepts:
+  - `Authorization: Bearer <CRON_SECRET>`
+  - `x-cron-secret: <CRON_SECRET>`
 
-To learn more about Next.js, take a look at the following resources:
+### Manual poll test
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+With local dev server running and `CRON_SECRET` set in `apps/web/.env.local`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+bun run test:poll
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This sends a cron-authenticated request to `/api/poll` and prints the JSON response.

@@ -21,6 +21,11 @@ coverage
 # Vercel
 .vercel
 
+# Local editor and agent configuration
+.codex/
+.cursor/
+.vscode/
+
 # Build Outputs
 .next/
 out/
