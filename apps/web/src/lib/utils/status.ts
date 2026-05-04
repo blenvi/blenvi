@@ -1,4 +1,4 @@
-import type { MetricDefinition } from "@/lib/services/types";
+import type { MetricDefinition } from "@/services/integrations/types";
 import type { Integration } from "@/types/database";
 
 const RANK: Record<Integration["status"], number> = {
@@ -52,6 +52,6 @@ export const statusBadgeVariant: Record<
 
 export const thresholdToneClass: Record<ThresholdSeverity, string> = {
   ok: "text-foreground",
-  warn: "text-amber-600 dark:text-amber-400",
+  warn: "text-status-degraded-foreground",
   critical: "text-destructive",
 };

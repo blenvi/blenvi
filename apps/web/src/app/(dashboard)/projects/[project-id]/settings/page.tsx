@@ -27,11 +27,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { deleteProjectAction, updateProjectAction } from "@/actions/projects";
-import PageContainer from "@/components/layout/page-container";
+import PageContainer from "@/components/layouts/page-container";
 import {
   type UpdateProjectInput,
   updateProjectSchema,
-} from "@/lib/validations/project";
+} from "@/lib/validators/project";
 
 export default function ProjectSettingsPage() {
   const router = useRouter();

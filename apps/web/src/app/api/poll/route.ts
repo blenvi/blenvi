@@ -3,8 +3,8 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { headers } from "next/headers";
 
-import { processInBatches } from "@/lib/poll/health";
-import { pollIntegration } from "@/lib/poll/poll-integration";
+import { processInBatches } from "@/services/poll/health";
+import { pollIntegration } from "@/services/poll/poll-integration";
 
 const POLL_LOCK_KEY = 962341;
 const POLL_BATCH_SIZE = 5;

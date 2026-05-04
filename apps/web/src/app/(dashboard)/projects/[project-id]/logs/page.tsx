@@ -1,14 +1,15 @@
 import { Button } from "@blenvi/ui/components/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import PageContainer from "@/components/layout/page-container";
-import { LogsDataTable } from "@/components/project/logs-data-table";
-import { getRecentChecksForProject } from "@/lib/db/integration-checks";
-import { getProjectById } from "@/lib/db/projects";
+import { LogsDataTable } from "@/components/features/project/logs-data-table";
+import PageContainer from "@/components/layouts/page-container";
+import { INTEGRATION_SERVICES, ROUTE_PATHS } from "@/constants";
+import { getRecentChecksForProject } from "@/services/db/integration-checks";
+import { getProjectById } from "@/services/db/projects";
 
 const LOG_PAGE_SIZE = 25;
 
-const serviceOptions = ["all", "neon"] as const;
+const serviceOptions = ["all", INTEGRATION_SERVICES.neon] as const;
 const statusOptions = [
   "all",
   "healthy",
@@ -30,7 +31,7 @@ function nextQueryString(
     if (value === null) params.delete(key);
     else params.set(key, value);
   }
-  return `/projects/${projectId}/logs?${params.toString()}`;
+  return `${ROUTE_PATHS.projectLogs(projectId)}?${params.toString()}`;
 }
 
 export default async function ProjectLogsPage({
@@ -93,7 +94,7 @@ export default async function ProjectLogsPage({
       pageDescription={`Every poll for ${projectName} writes a row to integration_checks. Use filters to narrow by service or outcome.`}
       pageHeaderAction={
         <Button variant="outline" size="sm" asChild>
-          <Link href={`/projects/${projectId}`}>Dashboard</Link>
+          <Link href={ROUTE_PATHS.project(projectId)}>Dashboard</Link>
         </Button>
       }
     >

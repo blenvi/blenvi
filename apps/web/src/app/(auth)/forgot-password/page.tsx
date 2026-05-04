@@ -19,7 +19,7 @@ import { createClient } from "@/lib/supabase/client";
 import {
   type ForgotPasswordInput,
   forgotPasswordSchema,
-} from "@/lib/validations/auth";
+} from "@/lib/validators/auth";
 
 export default function ForgotPasswordPage() {
   const supabase = createClient();

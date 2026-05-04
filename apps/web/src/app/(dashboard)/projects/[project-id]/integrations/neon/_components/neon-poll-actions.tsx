@@ -5,7 +5,8 @@ import { ActivityIcon, DatabaseZapIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type PollMode = "soft" | "hard";
+import { API_ENDPOINTS, POLL_MODES, UI_TEXT } from "@/constants";
+import type { PollMode } from "@/types/api";
 
 type Props = {
   integrationId: string;
@@ -20,17 +21,26 @@ export function NeonPollActions({ integrationId }: Props) {
     setActiveMode(mode);
     setError(null);
 
-    const response = await fetch(`/api/integrations/${integrationId}/poll`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode }),
-    });
+    try {
+      const response = await fetch(
+        API_ENDPOINTS.integrationPoll(integrationId),
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mode }),
+        },
+      );
 
-    if (!response.ok) {
-      const body = (await response.json().catch(() => ({}))) as {
-        error?: string;
-      };
-      setError(body.error ?? "Refresh failed. Try again later.");
+      if (!response.ok) {
+        const body = (await response.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        setError(body.error ?? "Refresh failed. Try again later.");
+        setActiveMode(null);
+        return;
+      }
+    } catch {
+      setError("Could not reach the poll endpoint. Try again later.");
       setActiveMode(null);
       return;
     }
@@ -47,19 +57,23 @@ export function NeonPollActions({ integrationId }: Props) {
           variant="outline"
           size="sm"
           disabled={activeMode !== null}
-          onClick={() => runPoll("soft")}
+          onClick={() => runPoll(POLL_MODES.soft)}
         >
           <ActivityIcon className="size-3.5" />
-          {activeMode === "soft" ? "Checking..." : "Soft check"}
+          {activeMode === POLL_MODES.soft
+            ? UI_TEXT.polling.softChecking
+            : UI_TEXT.polling.softCheck}
         </Button>
         <Button
           type="button"
           size="sm"
           disabled={activeMode !== null}
-          onClick={() => runPoll("hard")}
+          onClick={() => runPoll(POLL_MODES.hard)}
         >
           <DatabaseZapIcon className="size-3.5" />
-          {activeMode === "hard" ? "Refreshing..." : "Hard refresh"}
+          {activeMode === POLL_MODES.hard
+            ? UI_TEXT.polling.hardRefreshing
+            : UI_TEXT.polling.hardRefresh}
         </Button>
       </div>
       {error ? (

@@ -1,5 +1,5 @@
-import { getMyProfile } from "@/lib/db/profiles";
 import { createClient } from "@/lib/supabase/server";
+import { getMyProfile } from "@/services/db/profiles";
 
 import { AccountSettingsForm } from "./account-settings-form";
 

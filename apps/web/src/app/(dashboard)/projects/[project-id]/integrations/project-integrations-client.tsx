@@ -25,8 +25,16 @@ import {
   getIntegrationsAction,
 } from "@/actions/integrations";
 import { ConnectNeonSheet } from "@/app/(dashboard)/projects/[project-id]/integrations/_components/connect-neon-sheet";
-import PageContainer from "@/components/layout/page-container";
-import { neonIntegrationSectionPath } from "@/lib/navigation/neon-integration-nav";
+import PageContainer from "@/components/layouts/page-container";
+import {
+  API_ENDPOINTS,
+  INTEGRATION_SERVICES,
+  neonIntegrationSectionPath,
+  POLL_MODES,
+  ROUTE_PATHS,
+  UI_TEXT,
+} from "@/constants";
+import type { PollMode } from "@/types/api";
 import type { Integration } from "@/types/database";
 
 type Props = {
@@ -34,8 +42,6 @@ type Props = {
   projectName: string;
   initialIntegrations: Integration[];
 };
-
-type PollMode = "soft" | "hard";
 
 type CatalogIntegration = {
   key:
@@ -54,7 +60,7 @@ type CatalogIntegration = {
 
 const CATALOG: CatalogIntegration[] = [
   {
-    key: "neon",
+    key: INTEGRATION_SERVICES.neon,
     name: "Neon",
     initials: "NE",
     category: "database",
@@ -143,7 +149,8 @@ export function ProjectIntegrationsClient({
     () => new Map(items.map((item) => [item.service, item])),
     [items],
   );
-  const neonIntegration = connectedByService.get("neon") ?? null;
+  const neonIntegration =
+    connectedByService.get(INTEGRATION_SERVICES.neon) ?? null;
   const neonOverviewHref = neonIntegrationSectionPath(projectId, "overview");
   const connectedCount = items.length;
   const availableCount = Math.max(0, CATALOG.length - connectedCount);
@@ -152,7 +159,8 @@ export function ProjectIntegrationsClient({
     const normalizedQuery = query.trim().toLowerCase();
     return CATALOG.filter((integration) => {
       const connected =
-        integration.key === "neon" && connectedByService.has("neon");
+        integration.key === INTEGRATION_SERVICES.neon &&
+        connectedByService.has(INTEGRATION_SERVICES.neon);
       if (filter === "connected" && !connected) return false;
       if (
         filter !== "all" &&
@@ -182,21 +190,28 @@ export function ProjectIntegrationsClient({
   async function runPoll(integrationId: string, mode: PollMode) {
     setActivePollMode(mode);
     setError(null);
-    const response = await fetch(`/api/integrations/${integrationId}/poll`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode }),
-    });
-    if (!response.ok) {
-      const body = (await response.json().catch(() => ({}))) as {
-        error?: string;
-      };
-      setError(
-        body.error ??
-          (mode === "hard"
-            ? "Hard refresh failed. Try again later."
-            : "Soft check failed. Try again later."),
+    try {
+      const response = await fetch(
+        API_ENDPOINTS.integrationPoll(integrationId),
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mode }),
+        },
       );
+      if (!response.ok) {
+        const body = (await response.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        setError(
+          body.error ??
+            (mode === POLL_MODES.hard
+              ? "Hard refresh failed. Try again later."
+              : "Soft check failed. Try again later."),
+        );
+      }
+    } catch {
+      setError("Could not reach the poll endpoint. Try again later.");
     }
     await loadIntegrations();
     router.refresh();
@@ -209,7 +224,7 @@ export function ProjectIntegrationsClient({
       pageDescription={`${connectedCount} connected - ${availableCount} more available for ${projectName}`}
       pageHeaderAction={
         <Button type="button" variant="outline" size="sm" asChild>
-          <Link href={`/projects/${projectId}`}>Back to dashboard</Link>
+          <Link href={ROUTE_PATHS.project(projectId)}>Back to dashboard</Link>
         </Button>
       }
     >
@@ -226,7 +241,7 @@ export function ProjectIntegrationsClient({
               created,
               ...current.filter((item) => item.service !== created.service),
             ]);
-            await runPoll(created.id, "hard");
+            await runPoll(created.id, POLL_MODES.hard);
             router.push(neonOverviewHref);
           }}
         />
@@ -259,7 +274,9 @@ export function ProjectIntegrationsClient({
         <div className="grid grid-cols-1 gap-4 @3xl/main:grid-cols-2 @6xl/main:grid-cols-3">
           {visibleIntegrations.map((catalogItem) => {
             const connected =
-              catalogItem.key === "neon" ? neonIntegration : null;
+              catalogItem.key === INTEGRATION_SERVICES.neon
+                ? neonIntegration
+                : null;
             return (
               <Card key={catalogItem.key} className="@container/card">
                 <CardHeader>
@@ -304,20 +321,24 @@ export function ProjectIntegrationsClient({
                           variant="outline"
                           size="sm"
                           disabled={activePollMode !== null}
-                          onClick={() => runPoll(connected.id, "soft")}
+                          onClick={() => runPoll(connected.id, POLL_MODES.soft)}
                         >
                           <ActivityIcon className="size-3.5" />
-                          {activePollMode === "soft" ? "Checking..." : "Soft"}
+                          {activePollMode === POLL_MODES.soft
+                            ? UI_TEXT.polling.softChecking
+                            : "Soft"}
                         </Button>
                         <Button
                           type="button"
                           variant="outline"
                           size="sm"
                           disabled={activePollMode !== null}
-                          onClick={() => runPoll(connected.id, "hard")}
+                          onClick={() => runPoll(connected.id, POLL_MODES.hard)}
                         >
                           <DatabaseZapIcon className="size-3.5" />
-                          {activePollMode === "hard" ? "Syncing..." : "Hard"}
+                          {activePollMode === POLL_MODES.hard
+                            ? "Syncing..."
+                            : "Hard"}
                         </Button>
                       </div>
                       <Button
@@ -350,7 +371,7 @@ export function ProjectIntegrationsClient({
                       className="mt-auto"
                       disabled={!catalogItem.enabled}
                       onClick={() => {
-                        if (catalogItem.key === "neon") {
+                        if (catalogItem.key === INTEGRATION_SERVICES.neon) {
                           setSheetOpen(true);
                         }
                       }}

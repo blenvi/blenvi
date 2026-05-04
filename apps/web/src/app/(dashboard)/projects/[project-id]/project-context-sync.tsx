@@ -7,7 +7,7 @@ import {
   ACTIVE_PROJECT_COOKIE,
   ACTIVE_WORKSPACE_COOKIE,
 } from "@/lib/workspace-cookies";
-import { useWorkspaceStore } from "@/stores/workspace-store";
+import { useWorkspaceStore } from "@/stores/useWorkspaceStore";
 import type { Project, Workspace } from "@/types/database";
 
 export function ProjectContextSync({

@@ -21,8 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { createIntegrationAction } from "@/actions/integrations";
-import type { NeonCredentialsInput } from "@/lib/validations/integration";
-import { neonCredentialsSchema } from "@/lib/validations/integration";
+import type { NeonCredentialsInput } from "@/lib/validators/integration";
+import { neonCredentialsSchema } from "@/lib/validators/integration";
 import type { Integration } from "@/types/database";
 
 type Props = {

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getIntegrations } from "@/lib/db/integrations";
-import { getProjectById } from "@/lib/db/projects";
+import { getIntegrations } from "@/services/db/integrations";
+import { getProjectById } from "@/services/db/projects";
 import { ProjectIntegrationsClient } from "./project-integrations-client";
 
 export default async function ProjectIntegrationsPage({

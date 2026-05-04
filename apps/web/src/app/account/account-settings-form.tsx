@@ -21,7 +21,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { updateProfileAction } from "@/actions/profile";
-import { updateProfileSchema } from "@/lib/validations/profile";
+import { updateProfileSchema } from "@/lib/validators/profile";
 
 type FormValues = {
   display_name: string;

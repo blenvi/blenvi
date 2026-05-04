@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { getProjectById } from "@/lib/db/projects";
-import { getWorkspaceById } from "@/lib/db/workspaces";
+import { getProjectById } from "@/services/db/projects";
+import { getWorkspaceById } from "@/services/db/workspaces";
 
 import { ProjectContextSync } from "./project-context-sync";
 

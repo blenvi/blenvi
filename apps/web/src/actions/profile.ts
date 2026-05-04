@@ -1,13 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-
-import { upsertMyProfile } from "@/lib/db/profiles";
+import { UI_TEXT } from "@/constants";
 import { createClient } from "@/lib/supabase/server";
 import {
   type UpdateProfileInput,
   updateProfileSchema,
-} from "@/lib/validations/profile";
+} from "@/lib/validators/profile";
+import { upsertMyProfile } from "@/services/db/profiles";
 
 export async function updateProfileAction(input: unknown) {
   const supabase = await createClient();
@@ -15,7 +15,7 @@ export async function updateProfileAction(input: unknown) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { data: null, error: "Not authenticated" };
+  if (!user) return { data: null, error: UI_TEXT.auth.notAuthenticated };
 
   const parsed = updateProfileSchema.safeParse(input);
   if (!parsed.success)

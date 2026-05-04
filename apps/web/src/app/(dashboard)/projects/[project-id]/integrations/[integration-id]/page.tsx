@@ -2,18 +2,19 @@ import { Button } from "@blenvi/ui/components/button";
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SimulatedDataBanner } from "@/components/dashboard/simulated-data-banner";
-import { IntegrationCredentialsForm } from "@/components/integrations/integration-credentials-form";
-import { MetricHistoryTable } from "@/components/integrations/metric-history-table";
-import PageContainer from "@/components/layout/page-container";
+import { SimulatedDataBanner } from "@/components/features/dashboard/simulated-data-banner";
+import { MetricHistoryTable } from "@/components/features/integrations/metric-history-table";
+import { IntegrationCredentialsForm } from "@/components/forms/integrations/integration-credentials-form";
+import PageContainer from "@/components/layouts/page-container";
+import { ROUTE_PATHS } from "@/constants";
 import {
   getIntegrationByIdForProject,
   getIntegrationNeonProjectIdForEdit,
-} from "@/lib/db/integrations";
-import { getMetricsHistory } from "@/lib/db/metrics";
-import { getProjectById } from "@/lib/db/projects";
-import { getMetricDefinitions } from "@/lib/services/definitions";
-import { isSimulatedMetricPayload } from "@/lib/services/simulated";
+} from "@/services/db/integrations";
+import { getMetricsHistory } from "@/services/db/metrics";
+import { getProjectById } from "@/services/db/projects";
+import { getMetricDefinitions } from "@/services/integrations/definitions";
+import { isSimulatedMetricPayload } from "@/services/integrations/simulated";
 /** Always read fresh metric rows after poll/revalidate (avoid stale RSC shell). */
 export const dynamic = "force-dynamic";
 
@@ -57,7 +58,7 @@ export default async function IntegrationDetailPage({
       pageDescription={`Connection and metric history for ${projectResult.data.name}.`}
       pageHeaderAction={
         <Button variant="outline" asChild>
-          <Link href={`/projects/${projectId}/integrations`}>Back</Link>
+          <Link href={ROUTE_PATHS.projectIntegrations(projectId)}>Back</Link>
         </Button>
       }
     >

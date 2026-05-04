@@ -1,5 +1,5 @@
 import { cn } from "@blenvi/ui/lib/utils";
-import PageContainer from "@/components/layout/page-container";
+import PageContainer from "@/components/layouts/page-container";
 
 const changelogs = [
   {

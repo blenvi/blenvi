@@ -1,6 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 
-import { NeonBranchesPanel } from "@/components/integrations/neon";
+import { NeonBranchesPanel } from "@/components/features/integrations/neon";
 import { NeonPageShell } from "../_components/neon-page-shell";
 import { getNeonRouteData } from "../_data/neon-route-data";
 

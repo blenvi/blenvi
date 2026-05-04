@@ -37,12 +37,12 @@ import {
   getWorkspacesAction,
   updateWorkspaceAction,
 } from "@/actions/workspaces";
-import PageContainer from "@/components/layout/page-container";
+import PageContainer from "@/components/layouts/page-container";
 import {
   type UpdateWorkspaceInput,
   updateWorkspaceSchema,
-} from "@/lib/validations/workspace";
-import { useWorkspaceStore } from "@/stores/workspace-store";
+} from "@/lib/validators/workspace";
+import { useWorkspaceStore } from "@/stores/useWorkspaceStore";
 
 export default function WorkspaceSettingsPage() {
   const router = useRouter();

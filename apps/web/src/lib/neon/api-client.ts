@@ -1,3 +1,8 @@
+import {
+  EXTERNAL_API_BASE_URLS,
+  NEON_API_ENDPOINTS,
+  POLLING_LIMITS,
+} from "@/constants";
 import type { NeonCredentials } from "@/types/database";
 
 import type {
@@ -13,8 +18,6 @@ import type {
   NeonProjectResponse,
 } from "./api-types";
 
-const BASE_URL = "https://console.neon.tech/api/v2";
-
 export class NeonApiError extends Error {
   constructor(
     public status: number,
@@ -26,7 +29,7 @@ export class NeonApiError extends Error {
 }
 
 async function fetchJson<T>(creds: NeonCredentials, path: string): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const res = await fetch(`${EXTERNAL_API_BASE_URLS.neonConsole}${path}`, {
     headers: {
       Authorization: `Bearer ${creds.apiKey}`,
       "Content-Type": "application/json",
@@ -67,7 +70,7 @@ export async function getProject(
 ): Promise<NeonApiProject> {
   const data = await fetchJson<NeonProjectResponse>(
     creds,
-    `/projects/${encodeURIComponent(creds.projectId)}`,
+    NEON_API_ENDPOINTS.project(creds.projectId),
   );
   return data.project;
 }
@@ -77,7 +80,7 @@ export async function getEndpoints(
 ): Promise<NeonApiEndpoint[]> {
   const data = await fetchJson<NeonEndpointsResponse>(
     creds,
-    `/projects/${encodeURIComponent(creds.projectId)}/endpoints`,
+    NEON_API_ENDPOINTS.endpoints(creds.projectId),
   );
   return data.endpoints ?? [];
 }
@@ -93,7 +96,7 @@ export async function getConsumption(
   });
   const data = await fetchJson<NeonConsumptionHistoryResponse>(
     creds,
-    `/consumption_history/projects?${params.toString()}`,
+    NEON_API_ENDPOINTS.consumptionHistoryProjects(params.toString()),
   );
   return data.projects?.find((p) => p.project_id === creds.projectId) ?? null;
 }
@@ -103,7 +106,7 @@ export async function getBranches(
 ): Promise<NeonApiBranch[]> {
   const data = await fetchJson<NeonBranchesResponse>(
     creds,
-    `/projects/${encodeURIComponent(creds.projectId)}/branches`,
+    NEON_API_ENDPOINTS.branches(creds.projectId),
   );
   return data.branches ?? [];
 }
@@ -113,7 +116,10 @@ export async function getOperations(
 ): Promise<NeonApiOperation[]> {
   const data = await fetchJson<NeonOperationsResponse>(
     creds,
-    `/projects/${encodeURIComponent(creds.projectId)}/operations?limit=50`,
+    NEON_API_ENDPOINTS.operations(
+      creds.projectId,
+      POLLING_LIMITS.operationsLimit,
+    ),
   );
   return data.operations ?? [];
 }

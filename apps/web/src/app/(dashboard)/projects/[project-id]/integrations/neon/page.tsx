@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { neonIntegrationSectionPath } from "@/lib/navigation/neon-integration-nav";
+import { neonIntegrationSectionPath } from "@/constants";
 
 export default async function NeonIntegrationPage({
   params,

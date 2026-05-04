@@ -16,12 +16,13 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { createProjectAction } from "@/actions/projects";
-import PageContainer from "@/components/layout/page-container";
+import PageContainer from "@/components/layouts/page-container";
+import { ROUTE_PATHS } from "@/constants";
 import {
   type CreateProjectInput,
   createProjectSchema,
-} from "@/lib/validations/project";
-import { useWorkspaceStore } from "@/stores/workspace-store";
+} from "@/lib/validators/project";
+import { useWorkspaceStore } from "@/stores/useWorkspaceStore";
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function NewProjectPage() {
             );
             if (result.data) {
               setActiveProject(result.data);
-              router.push(`/projects/${result.data.id}`);
+              router.push(ROUTE_PATHS.project(result.data.id));
             }
           })}
         >

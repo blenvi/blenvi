@@ -12,9 +12,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { getProjectsAction } from "@/actions/projects";
-import PageContainer from "@/components/layout/page-container";
+import PageContainer from "@/components/layouts/page-container";
+import { ROUTE_PATHS } from "@/constants";
 import { setClientCookie } from "@/lib/client-cookies";
-import { useWorkspaceStore } from "@/stores/workspace-store";
+import { useWorkspaceStore } from "@/stores/useWorkspaceStore";
 
 export default function ProjectsPage() {
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function ProjectsPage() {
       pageTitle="Projects"
       pageDescription={`Workspace: ${activeWorkspace.name}`}
       pageHeaderAction={
-        <Button onClick={() => router.push("/projects/new")}>
+        <Button onClick={() => router.push(ROUTE_PATHS.newProject)}>
           New project
         </Button>
       }
@@ -66,7 +67,7 @@ export default function ProjectsPage() {
             <p className="mb-4 text-sm text-muted-foreground">
               No projects yet.
             </p>
-            <Button onClick={() => router.push("/projects/new")}>
+            <Button onClick={() => router.push(ROUTE_PATHS.newProject)}>
               Create your first project
             </Button>
           </div>
@@ -85,7 +86,7 @@ export default function ProjectsPage() {
                           path: "/",
                           maxAge: 31536000,
                         });
-                        router.push(`/projects/${project.id}`);
+                        router.push(ROUTE_PATHS.project(project.id));
                       }}
                     >
                       Open

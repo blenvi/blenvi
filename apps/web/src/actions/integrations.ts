@@ -1,7 +1,17 @@
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
+import {
+  INTEGRATION_SERVICES,
+  POLL_MODES,
+  ROUTE_PATHS,
+  UI_TEXT,
+} from "@/constants";
 import { decryptSecret } from "@/lib/crypto/encryption";
+import { createClient } from "@/lib/supabase/server";
+import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { neonCredentialsSchema } from "@/lib/validators/integration";
+import { neonUpdateSchema } from "@/lib/validators/neon-update";
 import {
   createIntegration as createIntegrationDb,
   deleteIntegration as deleteIntegrationDb,
@@ -9,15 +19,29 @@ import {
   getIntegrationByService,
   getIntegrations as getIntegrationsDb,
   updateIntegrationCredentials as updateIntegrationCredentialsDb,
-} from "@/lib/db/integrations";
-import { verifyUserCanEditIntegration } from "@/lib/db/metrics";
-import { pollIntegration } from "@/lib/poll/poll-integration";
-import { parseServiceCredentials } from "@/lib/services/credentials";
-import { validateNeonConsoleCredentials } from "@/lib/services/neon-input";
-import { createClient } from "@/lib/supabase/server";
-import { createServiceRoleClient } from "@/lib/supabase/service-role";
-import { neonCredentialsSchema } from "@/lib/validations/integration";
-import { neonUpdateSchema } from "@/lib/validations/neon-update";
+} from "@/services/db/integrations";
+import { verifyUserCanEditIntegration } from "@/services/db/metrics";
+import { parseServiceCredentials } from "@/services/integrations/credentials";
+import { validateNeonConsoleCredentials } from "@/services/integrations/neon-input";
+import { pollIntegration } from "@/services/poll/poll-integration";
+import type { PollMode } from "@/types/api";
+
+function revalidateProjectIntegrationViews(
+  projectId: string,
+  integrationId?: string,
+) {
+  revalidateTag("integrations", "max");
+  revalidatePath(ROUTE_PATHS.project(projectId));
+  revalidatePath(ROUTE_PATHS.projectIntegrations(projectId));
+  revalidatePath(ROUTE_PATHS.neonIntegration(projectId), "layout");
+
+  if (integrationId) {
+    revalidatePath(
+      ROUTE_PATHS.projectIntegration(projectId, integrationId),
+      "page",
+    );
+  }
+}
 
 export async function getIntegrationsAction(projectId: string) {
   const supabase = await createClient();
@@ -25,7 +49,7 @@ export async function getIntegrationsAction(projectId: string) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { data: null, error: "Not authenticated" };
+  if (!user) return { data: null, error: UI_TEXT.auth.notAuthenticated };
   return getIntegrationsDb(projectId);
 }
 
@@ -43,16 +67,19 @@ export async function createIntegrationAction(
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { data: null, error: "Not authenticated" };
+  if (!user) return { data: null, error: UI_TEXT.auth.notAuthenticated };
 
-  const existing = await getIntegrationByService(projectId, "neon");
+  const existing = await getIntegrationByService(
+    projectId,
+    INTEGRATION_SERVICES.neon,
+  );
   if (existing.error) {
     return { data: null, error: existing.error };
   }
   if (existing.data) {
     return {
       data: null,
-      error: "Neon is already connected to this project.",
+      error: UI_TEXT.neon.alreadyConnected,
     };
   }
 
@@ -72,12 +99,13 @@ export async function createIntegrationAction(
     projectId: parsed.data.projectId,
   });
 
-  const result = await createIntegrationDb(projectId, "neon", keyToEncrypt);
+  const result = await createIntegrationDb(
+    projectId,
+    INTEGRATION_SERVICES.neon,
+    keyToEncrypt,
+  );
   if (!result.error) {
-    revalidateTag("integrations", "max");
-    revalidatePath(`/projects/${projectId}`);
-    revalidatePath(`/projects/${projectId}/integrations`);
-    revalidatePath(`/projects/${projectId}/integrations/neon`, "layout");
+    revalidateProjectIntegrationViews(projectId);
   }
   return result;
 }
@@ -97,10 +125,10 @@ export async function updateIntegrationCredentialsAction(
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { data: null, error: "Not authenticated" };
+  if (!user) return { data: null, error: UI_TEXT.auth.notAuthenticated };
 
   const canEdit = await verifyUserCanEditIntegration(integrationId, user.id);
-  if (!canEdit) return { data: null, error: "Forbidden" };
+  if (!canEdit) return { data: null, error: UI_TEXT.auth.forbidden };
 
   const parsed = neonUpdateSchema.safeParse(credentials);
   if (!parsed.success) {
@@ -132,7 +160,7 @@ export async function updateIntegrationCredentialsAction(
     } catch {
       return {
         data: null,
-        error: "Stored credentials could not be read. Enter a new API key.",
+        error: UI_TEXT.neon.credentialsReadFailed,
       };
     }
   }
@@ -155,14 +183,7 @@ export async function updateIntegrationCredentialsAction(
   );
 
   if (!result.error) {
-    revalidateTag("integrations", "max");
-    revalidatePath(`/projects/${projectId}`);
-    revalidatePath(`/projects/${projectId}/integrations`);
-    revalidatePath(
-      `/projects/${projectId}/integrations/${integrationId}`,
-      "page",
-    );
-    revalidatePath(`/projects/${projectId}/integrations/neon`, "layout");
+    revalidateProjectIntegrationViews(projectId, integrationId);
   }
 
   return result;
@@ -171,17 +192,18 @@ export async function updateIntegrationCredentialsAction(
 export async function pollIntegrationAction(
   integrationId: string,
   projectId: string,
-  mode: "soft" | "hard" = "hard",
+  mode: PollMode = POLL_MODES.hard,
 ) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { ok: false as const, error: "Not authenticated" };
+  if (!user)
+    return { ok: false as const, error: UI_TEXT.auth.notAuthenticated };
 
   const canEdit = await verifyUserCanEditIntegration(integrationId, user.id);
-  if (!canEdit) return { ok: false as const, error: "Forbidden" };
+  if (!canEdit) return { ok: false as const, error: UI_TEXT.auth.forbidden };
 
   const admin = createServiceRoleClient();
   const { data: row, error: rowError } = await admin
@@ -199,17 +221,17 @@ export async function pollIntegrationAction(
   const pollResult = await pollIntegration(admin, row, nowIso, mode);
 
   revalidateTag("integrations", "max");
-  revalidatePath(`/projects/${projectId}`, "layout");
-  revalidatePath(`/projects/${projectId}/integrations`, "layout");
+  revalidatePath(ROUTE_PATHS.project(projectId), "layout");
+  revalidatePath(ROUTE_PATHS.projectIntegrations(projectId), "layout");
   revalidatePath(
-    `/projects/${projectId}/integrations/${integrationId}`,
+    ROUTE_PATHS.projectIntegration(projectId, integrationId),
     "page",
   );
-  if (row.service === "neon") {
-    revalidatePath(`/projects/${projectId}/integrations/neon`, "layout");
+  if (row.service === INTEGRATION_SERVICES.neon) {
+    revalidatePath(ROUTE_PATHS.neonIntegration(projectId), "layout");
   }
 
-  if (mode === "hard" && pollResult.metricsInsertFailed) {
+  if (mode === POLL_MODES.hard && pollResult.metricsInsertFailed) {
     return {
       ok: false as const,
       error:
@@ -227,14 +249,11 @@ export async function deleteIntegrationAction(id: string, projectId: string) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { data: null, error: "Not authenticated" };
+  if (!user) return { data: null, error: UI_TEXT.auth.notAuthenticated };
 
   const result = await deleteIntegrationDb(id);
   if (!result.error) {
-    revalidateTag("integrations", "max");
-    revalidatePath(`/projects/${projectId}`);
-    revalidatePath(`/projects/${projectId}/integrations`);
-    revalidatePath(`/projects/${projectId}/integrations/neon`, "layout");
+    revalidateProjectIntegrationViews(projectId);
   }
   return result;
 }

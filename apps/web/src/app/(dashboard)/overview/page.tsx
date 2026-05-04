@@ -1,14 +1,14 @@
-import PageContainer from "@/components/layout/page-container";
-import { ActiveIncidentsCard } from "@/components/overview/active-incidents-card";
-import { OverviewActivityChart } from "@/components/overview/overview-activity-chart";
-import { OverviewStatsRow } from "@/components/overview/overview-stats-row";
-import { ProjectsListCard } from "@/components/overview/projects-list-card";
-import { RecentChecksOverview } from "@/components/overview/recent-checks-overview";
-import { WorkspaceAlertBar } from "@/components/overview/workspace-alert-bar";
-import { getWorkspaceOverview } from "@/lib/db/overview";
-import { getWorkspaces } from "@/lib/db/workspaces";
+import { ActiveIncidentsCard } from "@/components/features/overview/active-incidents-card";
+import { OverviewActivityChart } from "@/components/features/overview/overview-activity-chart";
+import { OverviewStatsRow } from "@/components/features/overview/overview-stats-row";
+import { ProjectsListCard } from "@/components/features/overview/projects-list-card";
+import { RecentChecksOverview } from "@/components/features/overview/recent-checks-overview";
+import { WorkspaceAlertBar } from "@/components/features/overview/workspace-alert-bar";
+import PageContainer from "@/components/layouts/page-container";
 import { getWorstStatus } from "@/lib/utils/status";
 import { resolveActiveWorkspace } from "@/lib/workspace-context";
+import { getWorkspaceOverview } from "@/services/db/overview";
+import { getWorkspaces } from "@/services/db/workspaces";
 import type { Integration } from "@/types/database";
 
 function workspaceOverallStatus(

@@ -20,7 +20,7 @@ import { createClient } from "@/lib/supabase/client";
 import {
   type NewPasswordInput,
   newPasswordSchema,
-} from "@/lib/validations/auth";
+} from "@/lib/validators/auth";
 
 export default function UpdatePasswordPage() {
   const router = useRouter();

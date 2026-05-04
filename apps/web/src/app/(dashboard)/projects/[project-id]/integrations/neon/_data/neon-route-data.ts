@@ -1,13 +1,14 @@
 import { redirect } from "next/navigation";
-import { getIntegrationByService } from "@/lib/db/integrations";
+import { INTEGRATION_SERVICES, POLLING_LIMITS, ROUTE_PATHS } from "@/constants";
+import { getIntegrationByService } from "@/services/db/integrations";
 import {
   getNeonBranches,
   getNeonCostForecast,
   getNeonLatestSnapshot,
   getNeonOperations,
   getNeonSnapshotHistory,
-} from "@/lib/db/neon";
-import { getProjectById } from "@/lib/db/projects";
+} from "@/services/db/neon";
+import { getProjectById } from "@/services/db/projects";
 import type {
   Integration,
   NeonBranch,
@@ -38,12 +39,15 @@ export async function getNeonRouteData(
 ): Promise<NeonRouteData> {
   const projectResult = await getProjectById(projectId);
   if (!projectResult.data) {
-    redirect("/projects");
+    redirect(ROUTE_PATHS.projects);
   }
 
-  const integrationResult = await getIntegrationByService(projectId, "neon");
+  const integrationResult = await getIntegrationByService(
+    projectId,
+    INTEGRATION_SERVICES.neon,
+  );
   if (!integrationResult.data) {
-    redirect(`/projects/${projectId}/integrations`);
+    redirect(ROUTE_PATHS.projectIntegrations(projectId));
   }
 
   const integrationId = integrationResult.data.id;
@@ -51,7 +55,7 @@ export async function getNeonRouteData(
     await Promise.all([
       getNeonLatestSnapshot(integrationId),
       getNeonBranches(integrationId),
-      getNeonOperations(integrationId, 50),
+      getNeonOperations(integrationId, POLLING_LIMITS.operationsLimit),
       getNeonSnapshotHistory(integrationId, 48),
       getNeonCostForecast(integrationId),
     ]);

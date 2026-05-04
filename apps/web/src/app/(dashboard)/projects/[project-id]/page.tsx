@@ -9,35 +9,36 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { RecentChecksTable } from "@/components/checks/recent-checks-table";
-import { formatRelative } from "@/components/dashboard/metric-format";
-import { SimulatedDataBanner } from "@/components/dashboard/simulated-data-banner";
-import { IntegrationHealthCard } from "@/components/integrations/integration-health-card";
-import { StatusBadge } from "@/components/integrations/status-badge";
-import PageContainer from "@/components/layout/page-container";
-import { AvailabilityByIntegration } from "@/components/project-dashboard/availability-by-integration";
-import { CheckVolumeChart } from "@/components/project-dashboard/check-volume-chart";
-import { ErrorMessagesList } from "@/components/project-dashboard/error-messages-list";
-import { ProjectDownAlert } from "@/components/project-dashboard/project-down-alert";
-import { ProjectStatsRow } from "@/components/project-dashboard/project-stats-row";
-import type { IncidentRow } from "@/components/project-dashboard/recent-incidents";
-import { RecentIncidents } from "@/components/project-dashboard/recent-incidents";
-import { StaleIntegrationAlert } from "@/components/project-dashboard/stale-integration-alert";
-import { getProjectAnalytics } from "@/lib/db/integration-analytics";
-import { getRecentChecksForProject } from "@/lib/db/integration-checks";
-import { getIntegrations } from "@/lib/db/integrations";
+import { RecentChecksTable } from "@/components/features/checks/recent-checks-table";
+import { formatRelative } from "@/components/features/dashboard/metric-format";
+import { SimulatedDataBanner } from "@/components/features/dashboard/simulated-data-banner";
+import { IntegrationHealthCard } from "@/components/features/integrations/integration-health-card";
+import { StatusBadge } from "@/components/features/integrations/status-badge";
+import { AvailabilityByIntegration } from "@/components/features/project-dashboard/availability-by-integration";
+import { CheckVolumeChart } from "@/components/features/project-dashboard/check-volume-chart";
+import { ErrorMessagesList } from "@/components/features/project-dashboard/error-messages-list";
+import { ProjectDownAlert } from "@/components/features/project-dashboard/project-down-alert";
+import { ProjectStatsRow } from "@/components/features/project-dashboard/project-stats-row";
+import type { IncidentRow } from "@/components/features/project-dashboard/recent-incidents";
+import { RecentIncidents } from "@/components/features/project-dashboard/recent-incidents";
+import { StaleIntegrationAlert } from "@/components/features/project-dashboard/stale-integration-alert";
+import PageContainer from "@/components/layouts/page-container";
+import { POLLING_LIMITS, ROUTE_PATHS, TIME_MS } from "@/constants";
+import { getWorstStatus } from "@/lib/utils/status";
+import { getProjectAnalytics } from "@/services/db/integration-analytics";
+import { getRecentChecksForProject } from "@/services/db/integration-checks";
+import { getIntegrations } from "@/services/db/integrations";
 import {
   getActiveIncidentsForProject,
   getLatestMetricsForIntegrations,
-} from "@/lib/db/metrics";
-import { getNeonLatestSnapshot } from "@/lib/db/neon";
-import { getProjectById } from "@/lib/db/projects";
-import { getWorkspaceById } from "@/lib/db/workspaces";
-import { isSimulatedMetricPayload } from "@/lib/services/simulated";
-import { getWorstStatus } from "@/lib/utils/status";
+} from "@/services/db/metrics";
+import { getNeonLatestSnapshot } from "@/services/db/neon";
+import { getProjectById } from "@/services/db/projects";
+import { getWorkspaceById } from "@/services/db/workspaces";
+import { isSimulatedMetricPayload } from "@/services/integrations/simulated";
 import type { NeonSnapshot } from "@/types/database";
 
-const staleThresholdMinutes = 30;
+const staleThresholdMinutes = POLLING_LIMITS.staleIntegrationThresholdMinutes;
 
 export default async function ProjectPage({
   params,
@@ -54,7 +55,9 @@ export default async function ProjectPage({
     getWorkspaceById(projectResult.data.workspace_id),
   ]);
   const integrations = integrationsResult.data ?? [];
-  const pollIntervalMinutes = workspaceResult.data?.poll_interval_minutes ?? 5;
+  const pollIntervalMinutes =
+    workspaceResult.data?.poll_interval_minutes ??
+    POLLING_LIMITS.defaultWorkspacePollIntervalMinutes;
   const integrationIds = integrations.map((i) => i.id);
 
   const [
@@ -109,7 +112,7 @@ export default async function ProjectPage({
   const staleIntegrations = integrations.filter((integration) => {
     if (!integration.last_checked) return true;
     const diffMs = Date.now() - new Date(integration.last_checked).getTime();
-    return diffMs > staleThresholdMinutes * 60 * 1000;
+    return diffMs > staleThresholdMinutes * TIME_MS.minute;
   });
 
   const downIntegrations = integrations.filter((i) => i.status === "down");
@@ -162,14 +165,19 @@ export default async function ProjectPage({
       const n = (seenService.get(row.service) ?? 0) + 1;
       seenService.set(row.service, n);
       const name = dup
-        ? `${row.service} · ${row.integrationId.slice(0, 8)}`
+        ? `${row.service} - ${row.integrationId.slice(0, 8)}`
         : row.service;
       return { name, percent: row.availabilityPct };
     });
 
     const expectedPerIntegration = Math.max(
       1,
-      Math.floor((7 * 24 * 60) / Math.max(1, pollIntervalMinutes)),
+      Math.floor(
+        (POLLING_LIMITS.daysPerWeek *
+          POLLING_LIMITS.hoursPerDay *
+          POLLING_LIMITS.minutesPerHour) /
+          Math.max(1, pollIntervalMinutes),
+      ),
     );
     expectedTotal7d =
       integrations.length > 0
@@ -192,16 +200,16 @@ export default async function ProjectPage({
         integrations.length === 1 ? "" : "s"
       }${
         lastPolledIso
-          ? ` · last polled ${formatRelative(lastPolledIso)}`
-          : " · never polled"
+          ? ` - last polled ${formatRelative(lastPolledIso)}`
+          : " - never polled"
       }`}
       pageHeaderAction={
-        <div className="flex flex-wrap items-center justify-end gap-2">
+        <div className="flex flex-col flex-wrap items-center justify-end gap-2">
           {integrations.length > 0 ? (
             <StatusBadge status={overallHealth} />
           ) : null}
           <Button variant="outline" size="sm" asChild>
-            <Link href={`/projects/${projectId}/integrations`}>
+            <Link href={ROUTE_PATHS.projectIntegrations(projectId)}>
               Add integration
             </Link>
           </Button>
@@ -224,7 +232,7 @@ export default async function ProjectPage({
             </CardHeader>
             <CardContent>
               <Button asChild>
-                <Link href={`/projects/${projectId}/integrations`}>
+                <Link href={ROUTE_PATHS.projectIntegrations(projectId)}>
                   Add integration
                 </Link>
               </Button>
@@ -240,20 +248,17 @@ export default async function ProjectPage({
           />
         ) : null}
 
-        {integrations.length > 0 ? (
-          <div className="flex flex-col gap-4">
-            {integrations.map((integration) => (
-              <IntegrationHealthCard
-                key={integration.id}
-                projectId={projectId}
-                integration={integration}
-                latestMetric={metricsById.get(integration.id) ?? null}
-                neonSnapshot={neonSnapshots.get(integration.id) ?? null}
-                incidents={incidentsByIntegration.get(integration.id) ?? []}
-              />
-            ))}
-          </div>
-        ) : null}
+        {integrations.length > 0 &&
+          integrations.map((integration) => (
+            <IntegrationHealthCard
+              key={integration.id}
+              projectId={projectId}
+              integration={integration}
+              latestMetric={metricsById.get(integration.id) ?? null}
+              neonSnapshot={neonSnapshots.get(integration.id) ?? null}
+              incidents={incidentsByIntegration.get(integration.id) ?? []}
+            />
+          ))}
 
         {integrations.length > 0 && analytics ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -293,7 +298,7 @@ export default async function ProjectPage({
                 className="h-7 text-xs"
                 asChild
               >
-                <Link href={`/projects/${projectId}/logs`}>All logs</Link>
+                <Link href={ROUTE_PATHS.projectLogs(projectId)}>All logs</Link>
               </Button>
             }
           />

@@ -1,4 +1,4 @@
-import type { MetricUnit } from "@/lib/services/types";
+import type { MetricUnit } from "@/services/integrations/types";
 
 export function formatBytes(n: number): string {
   if (!Number.isFinite(n) || n < 0) return "—";

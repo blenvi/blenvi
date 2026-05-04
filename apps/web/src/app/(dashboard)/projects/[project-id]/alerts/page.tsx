@@ -2,12 +2,13 @@ import { Button } from "@blenvi/ui/components/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import PageContainer from "@/components/layout/page-container";
-import { getRecentIncidentsForProject } from "@/lib/db/integration-checks";
-import { getIntegrations } from "@/lib/db/integrations";
-import { getActiveIncidentsForProject } from "@/lib/db/metrics";
-import { getProjectById } from "@/lib/db/projects";
+import PageContainer from "@/components/layouts/page-container";
+import { ROUTE_PATHS } from "@/constants";
 import { severitySurfaceClass, statusTextClass } from "@/lib/ui/status-styles";
+import { getRecentIncidentsForProject } from "@/services/db/integration-checks";
+import { getIntegrations } from "@/services/db/integrations";
+import { getActiveIncidentsForProject } from "@/services/db/metrics";
+import { getProjectById } from "@/services/db/projects";
 import type { IntegrationIncident } from "@/types/database";
 
 function severityStyle(sev: IntegrationIncident["severity"]) {
@@ -48,7 +49,7 @@ export default async function ProjectAlertsPage({
       pageDescription={`Open incidents for ${projectName}, plus recent degraded or down health checks.`}
       pageHeaderAction={
         <Button variant="outline" size="sm" asChild>
-          <Link href={`/projects/${projectId}`}>Dashboard</Link>
+          <Link href={ROUTE_PATHS.project(projectId)}>Dashboard</Link>
         </Button>
       }
     >
@@ -97,7 +98,10 @@ export default async function ProjectAlertsPage({
                           {inc.severity}
                         </span>
                         <Link
-                          href={`/projects/${projectId}/integrations/${inc.integration_id}`}
+                          href={ROUTE_PATHS.projectIntegration(
+                            projectId,
+                            inc.integration_id,
+                          )}
                           className="text-xs text-primary underline-offset-4 hover:underline"
                         >
                           View integration

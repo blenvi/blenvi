@@ -16,7 +16,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { createClient } from "@/lib/supabase/client";
-import { type LoginInput, loginSchema } from "@/lib/validations/auth";
+import { type LoginInput, loginSchema } from "@/lib/validators/auth";
 
 export default function LoginPage() {
   const router = useRouter();

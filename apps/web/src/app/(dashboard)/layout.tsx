@@ -2,12 +2,12 @@ import { SidebarInset, SidebarProvider } from "@blenvi/ui/components/sidebar";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import Header from "@/components/layout/header";
-import { WorkspaceBootstrap } from "@/components/layout/workspace-bootstrap";
-import { getWorkspaces } from "@/lib/db/workspaces";
+import { AppSidebar } from "@/components/layouts/app-sidebar";
+import Header from "@/components/layouts/header";
+import { WorkspaceBootstrap } from "@/components/layouts/workspace-bootstrap";
 import { createClient } from "@/lib/supabase/server";
 import { resolveActiveWorkspace } from "@/lib/workspace-context";
+import { getWorkspaces } from "@/services/db/workspaces";
 
 export default async function DashboardLayout({
   children,

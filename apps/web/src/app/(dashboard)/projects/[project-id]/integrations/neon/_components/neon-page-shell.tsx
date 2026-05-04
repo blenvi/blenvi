@@ -3,13 +3,14 @@ import { Button } from "@blenvi/ui/components/button";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { formatRelative } from "@/components/dashboard/metric-format";
-import PageContainer from "@/components/layout/page-container";
+import { formatRelative } from "@/components/features/dashboard/metric-format";
+import PageContainer from "@/components/layouts/page-container";
 import {
   NEON_INTEGRATION_SECTIONS,
   type NeonIntegrationSection,
   neonIntegrationSectionPath,
-} from "@/lib/navigation/neon-integration-nav";
+  ROUTE_PATHS,
+} from "@/constants";
 import type { Integration } from "@/types/database";
 
 import { NeonPollActions } from "./neon-poll-actions";
@@ -37,13 +38,13 @@ export function NeonPageShell({
         <div className="flex flex-wrap items-center justify-end gap-2">
           <Badge variant="secondary">{integration.status}</Badge>
           <Button variant="outline" size="sm" asChild>
-            <Link href={`/projects/${projectId}/integrations`}>
+            <Link href={ROUTE_PATHS.projectIntegrations(projectId)}>
               Integrations
             </Link>
           </Button>
           <Button variant="outline" size="sm" asChild>
             <Link
-              href={`/projects/${projectId}/integrations/${integration.id}`}
+              href={ROUTE_PATHS.projectIntegration(projectId, integration.id)}
             >
               Credentials
             </Link>
